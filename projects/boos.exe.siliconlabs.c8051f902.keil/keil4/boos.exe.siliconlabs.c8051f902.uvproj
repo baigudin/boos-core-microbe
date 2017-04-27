@@ -118,7 +118,7 @@
             <Oh166RecLen>16</Oh166RecLen>
           </OPTHX>
           <Simulator>
-            <UseSimulator>1</UseSimulator>
+            <UseSimulator>0</UseSimulator>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
             <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
@@ -129,9 +129,9 @@
             <LimitSpeedToRealTime>0</LimitSpeedToRealTime>
           </Simulator>
           <Target>
-            <UseTarget>0</UseTarget>
+            <UseTarget>1</UseTarget>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
-            <RunToMain>0</RunToMain>
+            <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
             <RestoreWatchpoints>1</RestoreWatchpoints>
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
@@ -369,6 +369,26 @@
               <FileName>boos.main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\source\boos.main.c</FilePath>
+            </File>
+            <File>
+              <FileName>boos.driver.interrupt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\boos\driver\siliconlabs\c8051f90x\boos.driver.interrupt.c</FilePath>
+            </File>
+            <File>
+              <FileName>boos.driver.interrupt.ll.asm</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\..\..\boos\driver\siliconlabs\c8051f90x\boos.driver.interrupt.ll.asm</FilePath>
+            </File>
+            <File>
+              <FileName>boos.driver.watchdog.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\boos\driver\siliconlabs\c8051f90x\boos.driver.watchdog.c</FilePath>
+            </File>
+            <File>
+              <FileName>boos.driver.pll.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\boos\driver\siliconlabs\c8051f90x\boos.driver.pll.c</FilePath>
             </File>
           </Files>
         </Group>

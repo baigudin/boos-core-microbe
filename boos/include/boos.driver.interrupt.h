@@ -1,5 +1,5 @@
 /** 
- * Target processor interrupts factory.
+ * Target processor interrupts driver.  
  * 
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2017 Sergey Baigudin
@@ -9,26 +9,13 @@
 #ifndef BOOS_DRIVER_INTERRUPT_H_
 #define BOOS_DRIVER_INTERRUPT_H_
 
-#include "boos.types.h"
-
-/**
- * Returns the interrupt resource of a target processor.
- *
- * @return target processor interrupt resource.
- */
-extern int32 interruptCreate();
+#include "boos.constants.h"
 
 /**
  * Initializes the driver.
  *
- * @param config a target processor configuration.
- * @return true if no errors have been occurred.
+ * @return error code or else zero if no errors have been occurred.
  */   
-extern bool interruptInit();
-
-/**
- * Deinitializes the driver.
- */
-extern void interruptDeinit();
+extern int8 interruptInit();
 
 #endif // BOOS_DRIVER_INTERRUPT_H_

@@ -1,5 +1,5 @@
 /** 
- * User main class.
+ * User main function.
  * 
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2017 Sergey Baigudin
@@ -12,10 +12,10 @@
 #include "boos.types.h"
 
 /**
- * User method which will be stated as first.
+ * User function which will be stated as first.
  *
  * @return error code or zero.
  */
-extern int32 userMain();
+extern int8 userMain();
 
 #endif // BOOS_MAIN_H_

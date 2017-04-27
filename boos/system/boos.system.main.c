@@ -10,30 +10,18 @@
 #include "boos.driver.processor.h"
 
 /**
- * The function which will be stated first.
+ * Initializes the operating system.
  * 
- * @return error code or zero.
- */   
-static int32 systemMain()
+ * @return error code or else zero if no errors have been occurred.
+ */
+static int8 systemInit()
 {
-  int8 stage;
-  int32 error;
-  stage = 0;
-  do{
-    // Stage 1 
-    stage++;
-    if( !processorInit() ) break;    
-    // Stage complete
-    stage = -1;
-    error = userMain();
-  }while(0);
-  switch(stage)
-  {
-    default:
-    case  1: processorDeinit();
-    case  0: break;
-  }
-  return error;
+  int8 error;
+  // Stage 1 
+  error = processorInit();
+  if(error != BOOS_OK) return error;      
+  // Stage complete
+  return userMain();
 }
 
 /**
@@ -49,9 +37,7 @@ static int32 systemMain()
  * 
  * @return error code or zero.
  */   
-#ifdef BOOS_VENDOR_BOOT
 int main()
 {
-  return systemMain() & 0x0000ffff;
+  return systemInit();
 }
-#endif // BOOS_VENDOR_BOOT

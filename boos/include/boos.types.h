@@ -13,10 +13,10 @@
 #ifdef NULL
 #undef NULL
 #endif
-#ifndef __cplusplus
-  #define NULL  0
-#else
+#ifdef __cplusplus
   #error "The source file must be compiled by C compiler"
+#else
+  #define NULL ( 0 )
 #endif
 
 // LP32 or 2/4/4 (int is 16-bit, long and pointer are 32-bit)
@@ -65,6 +65,5 @@ typedef unsigned char       ucell;
 // Byte types of byte addressing
 typedef signed char         int8;
 typedef unsigned char       uint8;
-typedef unsigned char       bool;
 
 #endif // BOOS_TYPES_H_

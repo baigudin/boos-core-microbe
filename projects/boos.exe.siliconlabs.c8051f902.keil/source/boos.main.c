@@ -10,7 +10,7 @@
  *
  * @return error code or zero.
  */
-int32 userMain()
+int8 userMain()
 {
   while(1)
   {
