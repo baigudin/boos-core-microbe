@@ -131,7 +131,7 @@
           <Target>
             <UseTarget>1</UseTarget>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
-            <RunToMain>1</RunToMain>
+            <RunToMain>0</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
             <RestoreWatchpoints>1</RestoreWatchpoints>
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
@@ -351,11 +351,6 @@
           <GroupName>source</GroupName>
           <Files>
             <File>
-              <FileName>startup.asm</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\source\startup.asm</FilePath>
-            </File>
-            <File>
               <FileName>boos.system.main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\boos\system\boos.system.main.c</FilePath>
@@ -389,6 +384,16 @@
               <FileName>boos.driver.pll.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\boos\driver\siliconlabs\c8051f90x\boos.driver.pll.c</FilePath>
+            </File>
+            <File>
+              <FileName>boos.driver.timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\boos\driver\siliconlabs\c8051f90x\boos.driver.timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>boos.driver.boot.ll.asm</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\..\..\boos\driver\siliconlabs\c8051f90x\boos.driver.boot.ll.asm</FilePath>
             </File>
           </Files>
         </Group>

@@ -2,6 +2,9 @@
  * User program entry.
  * 
  * @author    Sergey Baigudin, sergey@baigudin.software
+ * @copyright 2017 Sergey Baigudin
+ * @license   http://baigudin.software/license/
+ * @link      http://baigudin.software
  */
 #include "boos.main.h"
 
@@ -12,8 +15,5 @@
  */
 int8 userMain()
 {
-  while(1)
-  {
-  };
   return 0;
 }

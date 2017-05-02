@@ -10,6 +10,7 @@
 #include "boos.driver.watchdog.h" 
 #include "boos.driver.pll.h"
 #include "boos.driver.interrupt.h"
+#include "boos.driver.timer.h"
   
 /**
  * Initializes the driver.
@@ -29,6 +30,9 @@ int8 processorInit(void)
     /* Stage 3 */
     error = interruptInit();
     if(error != BOOS_OK){ break; }   
+    /* Stage 3 */
+    error = timerInit();
+    if(error != BOOS_OK){ break; }    
     /* Stage complete */
   }while(0);
   return error;

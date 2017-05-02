@@ -1,20 +1,21 @@
 /** 
- * Target processor interrupts driver.  
+ * Target processor timer driver.  
  * 
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2017 Sergey Baigudin
  * @license   http://baigudin.software/license/
  * @link      http://baigudin.software
  */
-#include "boos.driver.interrupt.h" 
-#include "boos.driver.registers.h"
- 
+#ifndef BOOS_DRIVER_TIMER_H_
+#define BOOS_DRIVER_TIMER_H_
+
+#include "boos.constants.h"
+
 /**
  * Initializes the driver.
  *
  * @return error code or else zero if no errors have been occurred.
  */   
-int8 interruptInit(void)  
-{
-  return BOOS_OK;
-}
+extern int8 timerInit(void);
+
+#endif /* BOOS_DRIVER_TIMER_H_ */
