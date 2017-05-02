@@ -16,19 +16,21 @@
  *
  * @return error code or else zero if no errors have been occurred.
  */   
-int8 processorInit()
+int8 processorInit(void)
 {
-  int8 error;
-  // Stage 1 
-  error = watchdogInit();
-  if(error != BOOS_OK) return error;        
-  // Stage 2 
-  error = pllInit();
-  if(error != BOOS_OK) return error;  
-  // Stage 3
-  error = interruptInit();
-  if(error != BOOS_OK) return error;      
-  // Stage complete
-  return BOOS_OK;
+  int8 error = BOOS_OK;
+  do{
+    /* Stage 1 */
+    error = watchdogInit();	  
+    if(error != BOOS_OK){ break; }
+    /* Stage 2 */
+    error = pllInit();
+    if(error != BOOS_OK){ break; }
+    /* Stage 3 */
+    error = interruptInit();
+    if(error != BOOS_OK){ break; }   
+    /* Stage complete */
+  }while(0);
+  return error;
 }
 
