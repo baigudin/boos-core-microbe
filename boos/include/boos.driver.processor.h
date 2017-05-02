@@ -16,6 +16,6 @@
  *
  * @return error code or else zero if no errors have been occurred.
  */   
-extern int8 processorInit();
+extern int8 processorInit(void);
 
-#endif // BOOS_DRIVER_PROCESSOR_H_
+#endif /* BOOS_DRIVER_PROCESSOR_H_ */

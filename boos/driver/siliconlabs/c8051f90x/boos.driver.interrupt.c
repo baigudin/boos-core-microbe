@@ -14,7 +14,7 @@
  *
  * @return error code or else zero if no errors have been occurred.
  */   
-int8 interruptInit()  
+int8 interruptInit(void)  
 {
   return BOOS_OK;
 }

@@ -16,6 +16,6 @@
  *
  * @return error code or else zero if no errors have been occurred.
  */   
-extern int8 pllInit();
+extern int8 pllInit(void);
 
-#endif // BOOS_DRIVER_PLL_H_
+#endif /* BOOS_DRIVER_PLL_H_ */

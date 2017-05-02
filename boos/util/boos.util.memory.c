@@ -21,7 +21,7 @@ void* memoryCopy(void* dst, const void* src, size_t len)
 {
   register cell* sp  = (cell*)src;
   register cell* dp  = (cell*)dst;
-  while(len--) *dp++ = *sp++;
+  while(len--) {*dp++ = *sp++};
   return dst;
 }
 
@@ -38,7 +38,7 @@ void* memorySet(void* dst, cell val, size_t len)
 {
   register cell* dp = (cell*)dst;
   register const cell uc = val;
-  while(len--) *dp++ = uc;
+  while(len--) {*dp++ = uc};
   return dst;
 }
 
@@ -48,10 +48,10 @@ void* memorySet(void* dst, cell val, size_t len)
  * @param str pointer to C-string.
  * @return the length of string.
  */
-size_t memoryStrlen(const char* str)
+size_t memoryStrlen(const cstring* str)
 {
   register size_t len = 0;
-  while(*str++) len++;
+  while(*str++) {len++};
   return len;
 }
 
@@ -62,11 +62,11 @@ size_t memoryStrlen(const char* str)
  * @param src C-string to be copied.     
  * @return destination is returned.     
  */
-char* memoryStrcpy(char* dst, const char* src)
+cstring* memoryStrcpy(cstring* dst, const cstring* src)
 {
-  register char* d = dst - 1;     
-  register const char* s = src  - 1;     
-  while( (*++d = *++s) != 0 );
+  register cstring* d = dst - 1;     
+  register const cstring* s = src  - 1;     
+  while( (*++d = *++s) != 0 ){}
   return dst;
 }
 
@@ -78,13 +78,13 @@ char* memoryStrcpy(char* dst, const char* src)
  * @param src C-string to be appended. This should not overlap destination.
  * @return destination is returned.     
  */
-char* memoryStrcat(char* dst, const char* src)
+cstring* memoryStrcat(cstring* dst, const cstring* src)
 {
-  register char* d = dst - 1;
-  register const char* s = src - 1;
-  while( *++d );
+  register cstring* d = dst - 1;
+  register const cstring* s = src - 1;
+  while( *++d ){}
   d--;
-  while( (*++d = *++s) != 0 );
+  while( (*++d = *++s) != 0 ){}
   return dst;
 }
 
@@ -95,14 +95,14 @@ char* memoryStrcat(char* dst, const char* src)
  * @param str2 C-string to be compared.
  * @return a value indicating the relationship between the strings.
  */
-int32 memoryStrcmp(const char* str1, const char* str2)
+int32 memoryStrcmp(const cstring* str1, const cstring* str2)
 {
   register int32 c1, res;
   while(1)
   {
     c1 = *str1++;
     res = c1 - *str2++;
-    if(c1 == 0 || res != 0) break;
+    if(c1 == 0 || res != 0){ break; }
   }
   return res;
 }

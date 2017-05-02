@@ -16,6 +16,6 @@
  *
  * @return error code or else zero if no errors have been occurred.
  */   
-extern int8 interruptInit();
+extern int8 interruptInit(void);
 
-#endif // BOOS_DRIVER_INTERRUPT_H_
+#endif /* BOOS_DRIVER_INTERRUPT_H_ */

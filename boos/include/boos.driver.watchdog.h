@@ -16,6 +16,6 @@
  *
  * @return error code or else zero if no errors have been occurred.
  */   
-extern int8 watchdogInit();
+extern int8 watchdogInit(void);
 
-#endif // BOOS_DRIVER_WATCHDOG_H_
+#endif /* BOOS_DRIVER_WATCHDOG_H_ */

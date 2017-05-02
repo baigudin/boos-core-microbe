@@ -14,14 +14,16 @@
  * 
  * @return error code or else zero if no errors have been occurred.
  */
-static int8 systemInit()
+static int8 systemInit(void)
 {
-  int8 error;
-  // Stage 1 
-  error = processorInit();
-  if(error != BOOS_OK) return error;      
-  // Stage complete
-  return userMain();
+  int8 error = BOOS_OK;
+  do{
+    /* Stage 1 */
+    error = processorInit();    
+    if(error != BOOS_OK){ break; }
+    /* Stage complete */
+  }while(0);
+  return error == BOOS_OK ? userMain() : error;      
 }
 
 /**
@@ -37,7 +39,7 @@ static int8 systemInit()
  * 
  * @return error code or zero.
  */   
-int main()
+int16 main(void)
 {
   return systemInit();
 }

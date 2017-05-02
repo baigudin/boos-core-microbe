@@ -14,9 +14,9 @@
  *
  * @return error code or else zero if no errors have been occurred.
  */   
-int8 watchdogInit()
+int8 watchdogInit(void)
 {
-  // Disable watchdog timer
+  /* Disable watchdog timer */
   REG_PCA0MD &= 0xbf;
   return BOOS_OK;
 }

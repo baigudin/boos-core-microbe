@@ -28,4 +28,4 @@ enum Error
 
 };
 
-#endif // BOOS_TYPES_H_
+#endif /* BOOS_TYPES_H_ */

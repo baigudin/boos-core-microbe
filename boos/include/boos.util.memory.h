@@ -39,7 +39,7 @@ extern void* memorySet(void* dst, cell val, size_t len);
  * @param str pointer to C-string.
  * @return the length of string.
  */
-extern size_t memoryStrlen(const char* str);
+extern size_t memoryStrlen(const cstring* str);
 
 /** 
  * Copies a string.
@@ -48,7 +48,7 @@ extern size_t memoryStrlen(const char* str);
  * @param src C-string to be copied.     
  * @return destination is returned.     
  */
-extern char* memoryStrcpy(char* dst, const char* src);
+extern cstring* memoryStrcpy(cstring* dst, const cstring* src);
 
 /** 
  * Concatenates strings.
@@ -58,7 +58,7 @@ extern char* memoryStrcpy(char* dst, const char* src);
  * @param src C-string to be appended. This should not overlap destination.
  * @return destination is returned.     
  */
-extern char* memoryStrcat(char* dst, const char* src);
+extern cstring* memoryStrcat(cstring* dst, const cstring* src);
 
 /** 
  * Compares two strings.
@@ -67,7 +67,7 @@ extern char* memoryStrcat(char* dst, const char* src);
  * @param str2 C-string to be compared.
  * @return a value indicating the relationship between the strings.
  */
-extern int32 memoryStrcmp(const char* str1, const char* str2);
+extern int32 memoryStrcmp(const cstring* str1, const cstring* str2);
 
-#endif // BOOS_UTIL_MEMORY_H_
+#endif /* BOOS_UTIL_MEMORY_H_ */
 
