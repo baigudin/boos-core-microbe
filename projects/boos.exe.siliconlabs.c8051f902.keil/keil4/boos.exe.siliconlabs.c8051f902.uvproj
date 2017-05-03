@@ -296,7 +296,7 @@
             <InterruptVectorAddress>0</InterruptVectorAddress>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>BOOS_TYPE_C_STANDARD BOOS_VENDOR_BOOT</Define>
+              <Define>BOOS_TYPE_C_STANDARD,BOOS_VENDOR_BOOT</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\..\boos\include</IncludePath>
             </VariousControls>
@@ -371,11 +371,6 @@
               <FilePath>..\..\..\boos\driver\siliconlabs\c8051f90x\boos.driver.interrupt.c</FilePath>
             </File>
             <File>
-              <FileName>boos.driver.interrupt.ll.asm</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\..\..\boos\driver\siliconlabs\c8051f90x\boos.driver.interrupt.ll.asm</FilePath>
-            </File>
-            <File>
               <FileName>boos.driver.watchdog.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\boos\driver\siliconlabs\c8051f90x\boos.driver.watchdog.c</FilePath>
@@ -389,6 +384,11 @@
               <FileName>boos.driver.timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\boos\driver\siliconlabs\c8051f90x\boos.driver.timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>boos.driver.interrupt.ll.asm</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\..\..\boos\driver\siliconlabs\c8051f90x\boos.driver.interrupt.ll.asm</FilePath>
             </File>
             <File>
               <FileName>boos.driver.boot.ll.asm</FileName>

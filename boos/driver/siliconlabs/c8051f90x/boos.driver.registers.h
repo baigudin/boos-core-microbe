@@ -1,5 +1,5 @@
 /**
- * Silicon Labs C8051F9xx registers.
+ * Silicon Labs C8051F9x registers.
  *
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2017 Sergey Baigudin
@@ -154,49 +154,49 @@ sfr REG_VDM0CN      = 0xFF;        /*                                        */
 /**
  * Registers bit definitions
  */
-/* TCON 0x88 */
-sbit BIT_REG_TF1    = REG_TCON^7;  /* Timer 1 Overflow Flag                  */
-sbit BIT_REG_TR1    = REG_TCON^6;  /* Timer 1 On/Off Control                 */
-sbit BIT_REG_TF0    = REG_TCON^5;  /* Timer 0 Overflow Flag                  */
-sbit BIT_REG_TR0    = REG_TCON^4;  /* Timer 0 On/Off Control                 */
-sbit BIT_REG_IE1    = REG_TCON^3;  /* External Interrupt 1 Edge Flag         */
-sbit BIT_REG_IT1    = REG_TCON^2;  /* External Interrupt 1 Type              */
-sbit BIT_REG_IE0    = REG_TCON^1;  /* External Interrupt 0 Edge Flag         */
-sbit BIT_REG_IT0    = REG_TCON^0;  /* External Interrupt 0 Type              */
-                                   
+/* TCON */
+sbit REG_TCON_BIT_IT0 = REG_TCON^0;  /* External Interrupt 0 Type            */
+sbit REG_TCON_BIT_IE0 = REG_TCON^1;  /* External Interrupt 0 Edge Flag       */
+sbit REG_TCON_BIT_IT1 = REG_TCON^2;  /* External Interrupt 1 Type            */
+sbit REG_TCON_BIT_IE1 = REG_TCON^3;  /* External Interrupt 1 Edge Flag       */
+sbit REG_TCON_BIT_TR0 = REG_TCON^4;  /* Timer 0 On/Off Control               */
+sbit REG_TCON_BIT_TF0 = REG_TCON^5;  /* Timer 0 Overflow Flag                */
+sbit REG_TCON_BIT_TR1 = REG_TCON^6;  /* Timer 1 On/Off Control               */
+sbit REG_TCON_BIT_TF1 = REG_TCON^7;  /* Timer 1 Overflow Flag                */
+
 /* SCON0 */
-sbit BIT_REG_RI     = REG_SCON0^0;
-sbit BIT_REG_TI     = REG_SCON0^1;
-sbit BIT_REG_RB8    = REG_SCON0^2;
-sbit BIT_REG_TB8    = REG_SCON0^3;
-sbit BIT_REG_REN    = REG_SCON0^4;
-sbit BIT_REG_SM3    = REG_SCON0^5;
-sbit BIT_REG_SM1    = REG_SCON0^6;
-sbit BIT_REG_SM0    = REG_SCON0^7;
-                                   
+sbit REG_SCON0_BIT_RI  = REG_SCON0^0;
+sbit REG_SCON0_BIT_TI  = REG_SCON0^1;
+sbit REG_SCON0_BIT_RB8 = REG_SCON0^2;
+sbit REG_SCON0_BIT_TB8 = REG_SCON0^3;
+sbit REG_SCON0_BIT_REN = REG_SCON0^4;
+sbit REG_SCON0_BIT_SM3 = REG_SCON0^5;
+sbit REG_SCON0_BIT_SM1 = REG_SCON0^6;
+sbit REG_SCON0_BIT_SM0 = REG_SCON0^7;
+
 /* IE */
-sbit BIT_REG_EX0    = REG_IE^0;
-sbit BIT_REG_ET0    = REG_IE^1;
-sbit BIT_REG_EX1    = REG_IE^2;
-sbit BIT_REG_ET1    = REG_IE^3;
-sbit BIT_REG_ES     = REG_IE^4;
-sbit BIT_REG_EA     = REG_IE^7;
-                                   
+sbit REG_IE_BIT_EX0 = REG_IE^0;
+sbit REG_IE_BIT_ET0 = REG_IE^1;
+sbit REG_IE_BIT_EX1 = REG_IE^2;
+sbit REG_IE_BIT_ET1 = REG_IE^3;
+sbit REG_IE_BIT_ES  = REG_IE^4;
+sbit REG_IE_BIT_EA  = REG_IE^7;
+
 /* IP */
-sbit BIT_REG_PX0    = REG_IP^0;
-sbit BIT_REG_PT0    = REG_IP^1;
-sbit BIT_REG_PX1    = REG_IP^2;
-sbit BIT_REG_PT1    = REG_IP^3;
-sbit BIT_REG_PS     = REG_IP^4;
-                                   
+sbit REG_IP_BIT_PX0 = REG_IP^0;
+sbit REG_IP_BIT_PT0 = REG_IP^1;
+sbit REG_IP_BIT_PX1 = REG_IP^2;
+sbit REG_IP_BIT_PT1 = REG_IP^3;
+sbit REG_IP_BIT_PS  = REG_IP^4;
+
 /* PSW */
-sbit BIT_REG_P      = REG_PSW^0;
-sbit BIT_REG_OV     = REG_PSW^2;
-sbit BIT_REG_RS0    = REG_PSW^3;
-sbit BIT_REG_RS1    = REG_PSW^4;
-sbit BIT_REG_F0     = REG_PSW^5;
-sbit BIT_REG_AC     = REG_PSW^6;
-sbit BIT_REG_CY     = REG_PSW^7;
+sbit REG_PSW_BIT_P   = REG_PSW^0;
+sbit REG_PSW_BIT_OV  = REG_PSW^2;
+sbit REG_PSW_BIT_RS0 = REG_PSW^3;
+sbit REG_PSW_BIT_RS1 = REG_PSW^4;
+sbit REG_PSW_BIT_F0  = REG_PSW^5;
+sbit REG_PSW_BIT_AC  = REG_PSW^6;
+sbit REG_PSW_BIT_CY  = REG_PSW^7;
 
 #endif /* BOOS_DRIVER_REGISTERS_H_ */
 
