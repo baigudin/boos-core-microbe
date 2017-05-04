@@ -29,7 +29,7 @@ IDATALEN        EQU         100h
 XDATASTART      EQU         0h
 
 ; Indicates the number of bytes of xdata to be initialized to 0
-XDATALEN        EQU         200h
+XDATALEN        EQU         0h
 
 ; Specifies the pdata address to start initializing to 0
 PDATASTART      EQU         0h

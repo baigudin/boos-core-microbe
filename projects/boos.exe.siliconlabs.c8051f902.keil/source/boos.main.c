@@ -7,6 +7,15 @@
  * @link      http://baigudin.software
  */
 #include "boos.main.h"
+#include "boos.driver.interrupt.h"
+
+/**
+ * Interrupt handler.
+ */
+void handler()
+{
+  
+}
 
 /**
  * User program entry.
@@ -15,5 +24,9 @@
  */
 int8 userMain()
 {
+  int8 res;
+  interruptGlobalEnable(1);
+  res = interruptCreate(&handler, 1);
+  interruptGlobalDisable();  
   return 0;
 }
