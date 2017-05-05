@@ -8,6 +8,7 @@
  */
 #include "boos.main.h"
 #include "boos.driver.interrupt.h"
+#include "boos.driver.timer.h"
 
 /**
  * Interrupt handler.
@@ -24,9 +25,24 @@ void handler()
  */
 int8 userMain()
 {
-  int8 res;
+  int8 iRes, tRes;
+  volatile int8 exe = 1;
+  volatile int8 val = 0;  
   interruptGlobalEnable(1);
-  res = interruptCreate(&handler, 1);
+  /* Create Timer 0 interrupt resource */
+  iRes = interruptCreate(&handler, 1);
+  interruptEnable(iRes, 1);
+  /* Create Timer 0 resource */
+  tRes = timerCreate(0);
+  /* Waiting*/
+  while(exe)
+  {
+    val++;
+  };
+  /* Remove allocated resources */
+  timerRemove(tRes);
+  interruptDisable(iRes);  
+  interruptRemove(iRes);    
   interruptGlobalDisable();  
   return 0;
 }

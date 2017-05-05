@@ -19,8 +19,7 @@ int8 pllInit(void)
   volatile uint8 val;
   /* Enable spread spectrum clock dithering and
    * also reduce the factory frequency 
-   * from 24.5 MHz to 24.3 MHz 
-   */
+   * from 24.5 MHz to 24.3 MHz */
   REG_OSCICL |= 0x80;
   /* Enabled internal oscillator */
   REG_OSCICN |= 0x80;

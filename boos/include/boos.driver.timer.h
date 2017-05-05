@@ -12,6 +12,21 @@
 #include "boos.constants.h"
 
 /**
+ * Returns an timer resource.
+ *
+ * @param index an available timer index.
+ * @return the timer resource, or zero if error has been occurred.
+ */
+extern int8 timerCreate(int8 index);
+
+/**
+ * Removes the timer resource.
+ *
+ * @param res the timer resource.
+ */
+extern void timerRemove(int8 res);
+
+/**
  * Initializes the driver.
  *
  * @return error code or else zero if no errors have been occurred.
