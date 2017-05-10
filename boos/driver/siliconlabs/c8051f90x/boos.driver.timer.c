@@ -8,16 +8,22 @@
  */
 #include "boos.driver.timer.h" 
 #include "boos.driver.registers.h"
+#include "boos.driver.constants.h"
 
 /**
  * Number of possible resources.
  */
-#define RESOURCES_NUMBER 2
+#define RESOURCES_NUMBER (2)
 
 /**
  * Timer resource index mask.
  */
-#define RES_INDEX_MASK 0x3
+#define RES_INDEX_MASK (0x3)
+
+/**
+ * Timer 0/1 clock in KHz.
+ */  
+#define TIMER_CLOCK_KHZ (TIMER_CLOCK / 1000)
 
 /**
  * Locked flag of each HW timer.  
@@ -52,11 +58,25 @@ static int8 isAlloced(int8 res)
  */
 int8 timerCreate(int8 index)
 {
-  int8 res = 0;
+  int8 res;
+  uint8 mask, shift;  
+  res = 0;
   if( 0 <= index && index < RESOURCES_NUMBER )
   {
-    lock_[index] = 1;
-    res = index & RES_INDEX_MASK | 0x80;
+    do{
+      if(lock_[index] == 1){ break; }
+      shift = index * 4;
+      /* Zero the HW timer registers */
+      mask = 0x0f << shift;
+      REG_TMOD &= ~mask;
+      mask = 0x33 << shift;      
+      REG_TCON &= ~mask;
+      /* Set 8-bit auto-reload timer mode */
+      REG_TMOD |= 0x02 << shift;
+      /* Alloc the timer */      
+      lock_[index] = 1;      
+      res = index & RES_INDEX_MASK | 0x80;      
+    }while(0);
   }
   return res;  
 }
@@ -75,6 +95,94 @@ void timerRemove(int8 res)
     lock_[index] = 0;
   }
 }
+
+/**
+ * Sets the timer period.
+ *
+ * @param res  the timer resource.
+ * @param time timer period in microseconds, zero value sets a period to maximum value.
+ */      
+void timerSetPeriod(int8 res, int16 us)
+{
+  int8 index;
+  uint8 reg;
+  uint32 time, value;
+  if( us >= 0 && isAlloced(res) )
+  {
+    index = res & RES_INDEX_MASK;    
+    if(us == 0)
+    {
+      reg = 0x00;
+    }
+    else
+    {
+      time = us;
+      value = time * TIMER_CLOCK_KHZ;
+      value = value / 1000;
+      /* If overflow has been occurred, set max value */
+      if(value >> 8 > 0)
+      {
+        reg = 0x00;
+      }
+      /* Set desired value */
+      else
+      {
+        reg = value & 0xff;
+        reg = 0 - reg;
+      } 
+    }
+    switch(index)
+    {
+      case 0:
+      {
+        /* Set up counter */
+        REG_TL0 = reg;
+        /* Set period */        
+        REG_TH0 = reg;        
+      }
+      break;
+      case 1:
+      {
+        /* Set up counter */
+        REG_TL1 = reg;
+        /* Set period */        
+        REG_TH1 = reg;                
+      }
+      break;
+      default: break;
+    }
+  }  
+}
+
+/**
+ * Starts the timer count.
+ *
+ * @param res the timer resource.
+ */      
+void timerStart(int8 res)
+{
+  int8 index;
+  if( isAlloced(res) )
+  {
+    index = res & RES_INDEX_MASK;    
+    REG_TCON |= 0x1 << (index * 2 + 4);
+  }  
+}
+
+/**
+ * Stops the timer count.
+ *
+ * @param res the timer resource.
+ */      
+void timerStop(int8 res)
+{
+  int8 index;
+  if( isAlloced(res) )
+  {
+    index = res & RES_INDEX_MASK;    
+    REG_TCON &= ~(0x1 << (index * 2 + 4));
+  }    
+}
  
 /**
  * Initializes the driver.
@@ -83,12 +191,36 @@ void timerRemove(int8 res)
  */   
 int8 timerInit(void)  
 {
+  int8 error;
+  #if TIMER_DIVIDER == 48
+  REG_CKCON &= 0xf0;
+  REG_CKCON |= 0x02;
+  error = BOOS_OK;  
+  #elif TIMER_DIVIDER == 12
+  REG_CKCON &= 0xf0;
+  REG_CKCON |= 0x00;
+  error = BOOS_OK;  
+  #elif TIMER_DIVIDER == 8
+  REG_CKCON &= 0xf0;
+  REG_CKCON |= 0x03;
+  error = BOOS_OK;  
+  #elif TIMER_DIVIDER == 4
+  REG_CKCON &= 0xf0;
+  REG_CKCON |= 0x01;
+  error = BOOS_OK;
+  #elif TIMER_DIVIDER == 1
+  REG_CKCON &= 0xf0;
+  REG_CKCON |= 0x0c;
+  error = BOOS_OK;  
+  #else
+  error = BOOS_ERROR;
+  #endif
   #ifdef BOOS_RESTARTING
   for(int8 i=0; i<RESOURCES_NUMBER; i++)
   {
     lock_[i] = 0;
   }
   #endif /* BOOS_RESTARTING */  
-  return BOOS_OK;
+  return error;
 }
 

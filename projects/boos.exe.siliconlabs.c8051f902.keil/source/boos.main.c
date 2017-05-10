@@ -34,11 +34,14 @@ int8 userMain()
   interruptEnable(iRes, 1);
   /* Create Timer 0 resource */
   tRes = timerCreate(0);
+  timerSetPeriod(tRes, 500);  
+  timerStart(tRes);  
   /* Waiting*/
   while(exe)
   {
     val++;
   };
+  timerStop(tRes);    
   /* Remove allocated resources */
   timerRemove(tRes);
   interruptDisable(iRes);  

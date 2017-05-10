@@ -8,6 +8,7 @@
  */
 #include "boos.driver.pll.h" 
 #include "boos.driver.registers.h"
+#include "boos.driver.constants.h"
   
 /**
  * Initializes the driver.
@@ -16,6 +17,8 @@
  */   
 int8 pllInit(void)
 {
+  int8 error;
+  #if CPU_CLOCK == 24300000
   volatile uint8 val;
   /* Enable spread spectrum clock dithering and
    * also reduce the factory frequency 
@@ -34,5 +37,9 @@ int8 pllInit(void)
   do{
     val = REG_CLKSEL & 0x80;
   }while(val == 0x0);
-  return BOOS_OK;
+  error = BOOS_OK;
+  #else
+  error = BOOS_ERROR;
+  #endif /* CPU_CLOCK */
+  return error;  
 }

@@ -8,21 +8,22 @@
  */
 #include "boos.driver.interrupt.h" 
 #include "boos.driver.registers.h"
+#include "boos.driver.constants.h"
 
 /**
  * Number of possible resources.
  */
-#define RESOURCES_NUMBER 7
+#define RESOURCES_NUMBER (7)
 
 /**
  * Number of possible interrupt resources.
  */
-#define VECTORS_NUMBER 19
+#define VECTORS_NUMBER (19)
 
 /**
  * Interrupt resource source mask.
  */
-#define RES_SOURCE_MASK 0x1f
+#define RES_SOURCE_MASK (0x1f)
 
 /**
  * Context of interrupted program by interrupt.
@@ -69,6 +70,16 @@ static int8 isAlloced(int8 res)
     ret = 1;    
   }while(0);
   return ret;
+}
+
+/**
+ * HW interrupt handle routing.
+ *
+ * @param index index of HW interrupt vector
+ */
+void interruptHandler000(int8 index)
+{
+    
 }
 
 /**
@@ -136,6 +147,10 @@ int8 interruptDisable(int8 res)
       ret = REG_EIE2 & val ? 1 : 0;
       REG_EIE2 &= ~val;      
     }
+    else
+    {
+      ret = 0;
+    }
   }    
   return ret;
 }
@@ -167,6 +182,9 @@ void interruptEnable(int8 res, int8 status)
     {
       val = 0x01 << (vec - 15);      
       REG_EIE2 |= val;            
+    }
+    else
+    {
     }
   }   
 }

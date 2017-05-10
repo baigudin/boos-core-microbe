@@ -154,5 +154,7 @@ mc_pdata:       movx        @r0, a
                 ENDIF                
 
                 mov         sp, #v_stack-1
-                ljmp        main
+                lcall       main
+m_termination:
+                ajmp        m_termination
                 END

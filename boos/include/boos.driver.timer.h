@@ -27,6 +27,28 @@ extern int8 timerCreate(int8 index);
 extern void timerRemove(int8 res);
 
 /**
+ * Sets the timer period.
+ *
+ * @param res  the timer resource. 
+ * @param time timer period in microseconds, zero value sets a period to maximum value.
+ */      
+extern void timerSetPeriod(int8 res, int16 us);
+
+/**
+ * Starts the timer count.
+ *
+ * @param res the timer resource. 
+ */      
+extern void timerStart(int8 res);
+
+/**
+ * Stops the timer count.
+ *
+ * @param res the timer resource. 
+ */      
+extern void timerStop(int8 res);
+
+/**
  * Initializes the driver.
  *
  * @return error code or else zero if no errors have been occurred.

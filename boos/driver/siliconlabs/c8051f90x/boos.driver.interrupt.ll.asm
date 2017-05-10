@@ -212,10 +212,14 @@ m_int_18:
 ; ----------------------------------------------------------------------------
 ; Interrupt service routine.
 ; ----------------------------------------------------------------------------
+                EXTRN       CODE (_interruptHandler000)
+                
                 RSEG        s_isr
 m_int_handler:  
                 nop
-                ajmp        m_int_handler
+                lcall       _interruptHandler000
+                nop
+                reti
 
                 END
 
