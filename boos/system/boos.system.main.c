@@ -8,6 +8,7 @@
  */
 #include "boos.main.h" 
 #include "boos.driver.processor.h"
+#include "boos.driver.interrupt.h"
 
 /**
  * Initializes the operating system.
@@ -23,7 +24,14 @@ static int8 systemInit(void)
     if(error != BOOS_OK){ break; }
     /* Stage complete */
   }while(0);
-  return error == BOOS_OK ? userMain() : error;      
+  /* Call user main function */
+  if(error == BOOS_OK)
+  {
+    interruptGlobalEnable(1);  
+    error = userMain();
+    interruptGlobalDisable();    
+  }
+  return error;
 }
 
 /**

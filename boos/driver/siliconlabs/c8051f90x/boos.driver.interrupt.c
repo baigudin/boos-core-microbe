@@ -28,17 +28,21 @@
 /**
  * Context of interrupted program by interrupt.
  */
-typedef struct _Context{
-  int8 rn[8];
-  int8 ac;
-  int8 b;
-  int8 psw;
+typedef struct _Context
+{
+  uint8 rn[8];  
+  uint8 acc;  
+  uint8 b;
+  uint8 dph;  
+  uint8 dpl;    
+  uint8 psw;      
 } Context;
 
 /**
  * Interrupted handler data.
  */
-typedef struct _Handler{
+typedef struct _Handler
+{
   void(*addr)();
 } Handler;
 
@@ -77,9 +81,12 @@ static int8 isAlloced(int8 res)
  *
  * @param index index of HW interrupt vector
  */
-void interruptHandler000(int8 index)
+void interruptHandler(uint8 index)
 {
-    
+  if( index < VECTORS_NUMBER && handler_[index].addr != 0 )
+  {
+    handler_[index].addr();
+  }
 }
 
 /**
