@@ -21,7 +21,7 @@ void* memoryCopy(void* dst, const void* src, size_t len)
 {
   register cell* sp  = (cell*)src;
   register cell* dp  = (cell*)dst;
-  while(len--) {*dp++ = *sp++};
+  while(len--) {*dp++ = *sp++;}
   return dst;
 }
 
@@ -38,7 +38,7 @@ void* memorySet(void* dst, cell val, size_t len)
 {
   register cell* dp = (cell*)dst;
   register const cell uc = val;
-  while(len--) {*dp++ = uc};
+  while(len--) {*dp++ = uc;}
   return dst;
 }
 
@@ -51,7 +51,7 @@ void* memorySet(void* dst, cell val, size_t len)
 size_t memoryStrlen(const cstring* str)
 {
   register size_t len = 0;
-  while(*str++) {len++};
+  while(*str++) {len++;}
   return len;
 }
 

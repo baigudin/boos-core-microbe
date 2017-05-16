@@ -59,5 +59,7 @@ typedef unsigned char       ucell;
 /* Byte types of byte addressing */
 typedef signed char         int8;
 typedef unsigned char       uint8;
+/* C-string type */
+typedef char                cstring;
 
 #endif /* BOOS_TYPES_H_ */
