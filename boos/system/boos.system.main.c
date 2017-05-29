@@ -28,7 +28,7 @@ static int8 systemInit(void)
   if(error == BOOS_OK)
   {
     interruptGlobalEnable(1);  
-    error = userMain();
+    error = mainStart();
     interruptGlobalDisable();    
   }
   return error;

@@ -16,6 +16,6 @@
  *
  * @return error code or zero.
  */
-extern int8 userMain(void);
+extern int8 mainStart(void);
 
 #endif /* BOOS_MAIN_H_ */
