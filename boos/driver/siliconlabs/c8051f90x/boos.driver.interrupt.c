@@ -6,6 +6,7 @@
  * @license   http://baigudin.software/license/
  * @link      http://baigudin.software
  */
+#include "boos.driver.interrupt.ll.h"  
 #include "boos.driver.interrupt.h" 
 #include "boos.driver.registers.h"
 #include "boos.driver.constants.h"
@@ -57,6 +58,11 @@ static Context context_;
 static Handler handler_[VECTORS_NUMBER];
 
 /**
+ * The driver has been initialized successfully.
+ */
+static int8 isInitialized_;
+
+/**
  * Tests if value passed is the resource.
  *
  * @param res an interrupt resource. 
@@ -66,13 +72,16 @@ static int8 isAlloced(int8 res)
 {
   int8 ret, vec;
   ret = 0;
-  do{
-    if( res == 0 ) { break; }    
-    vec = res & RES_SOURCE_MASK;  
-    if( vec < 0 || VECTORS_NUMBER <= vec ) { break; }
-    if( handler_[vec].addr == 0 ) { break; }
-    ret = 1;    
-  }while(0);
+  if(isInitialized_)
+  {  
+    do{
+      if( res == 0 ) { break; }    
+      vec = res & RES_SOURCE_MASK;  
+      if( vec < 0 || VECTORS_NUMBER <= vec ) { break; }
+      if( handler_[vec].addr == 0 ) { break; }
+      ret = 1;    
+    }while(0);
+  }
   return ret;
 }
 
@@ -228,6 +237,7 @@ void interruptGlobalEnable(int8 status)
  */   
 int8 interruptInit(void)  
 {
+  isInitialized_ = 0;  
   #ifdef BOOS_RESTARTING
   /* Disable all interrupts */
   REG_IE = 0;
@@ -238,5 +248,6 @@ int8 interruptInit(void)
   REG_EIP1 = 0;
   REG_EIP2 = 0;
   #endif /* BOOS_RESTARTING */
+  isInitialized_ = 1;  
   return BOOS_OK;
 }

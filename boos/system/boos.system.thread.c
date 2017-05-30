@@ -13,10 +13,10 @@
  *
  * @param millis a time to sleep in milliseconds.
  */  
-void threadSleep(int8 millis)
+void threadSleep(int16 millis)
 {
   uint32 i, max, time;
-  time = millis;
+  time = (uint16) millis;
   max = 0x167 * time;   
   for(i=0; i<max; i++){}
 }

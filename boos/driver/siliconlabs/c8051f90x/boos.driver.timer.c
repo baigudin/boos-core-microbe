@@ -31,6 +31,11 @@
 static int8 lock_[RESOURCES_NUMBER];
 
 /**
+ * The driver has been initialized successfully.
+ */
+static int8 isInitialized_;
+
+/**
  * Tests if value passed is the resource.
  *
  * @param res an interrupt resource. 
@@ -40,13 +45,16 @@ static int8 isAlloced(int8 res)
 {
   int8 ret, index;
   ret = 0;
-  do{
-    if( res == 0 ) { break; }    
-    index = res & RES_INDEX_MASK;  
-    if( index < 0 || RESOURCES_NUMBER <= index ) { break; }
-    if( lock_[index] == 0 ) { break; }
-    ret = 1;    
-  }while(0);
+  if(isInitialized_)
+  {
+    do{
+      if( res == 0 ) { break; }    
+      index = res & RES_INDEX_MASK;  
+      if( index < 0 || RESOURCES_NUMBER <= index ) { break; }
+      if( lock_[index] == 0 ) { break; }
+      ret = 1;    
+    }while(0);
+  }
   return ret;
 }
 
@@ -192,6 +200,7 @@ void timerStop(int8 res)
 int8 timerInit(void)  
 {
   int8 error;
+  isInitialized_ = 0;   
   #if TIMER_DIVIDER == 48
   REG_CKCON &= 0xf0;
   REG_CKCON |= 0x02;
@@ -221,6 +230,10 @@ int8 timerInit(void)
     lock_[i] = 0;
   }
   #endif /* BOOS_RESTARTING */  
+  if(error == BOOS_OK)
+  {
+    isInitialized_ = 1;  
+  }  
   return error;
 }
 

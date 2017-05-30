@@ -16,6 +16,6 @@
  *
  * @param millis a time to sleep in milliseconds.
  */  
-extern void threadSleep(int8 millis);
+extern void threadSleep(int16 millis);
 
 #endif /* BOOS_SYSTEM_THREAD_H_ */
