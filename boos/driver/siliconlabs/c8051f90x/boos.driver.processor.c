@@ -11,6 +11,7 @@
 #include "boos.driver.pll.h"
 #include "boos.driver.interrupt.h"
 #include "boos.driver.timer.h"
+#include "boos.driver.comparator.h"
   
 /**
  * Initializes the driver.
@@ -29,9 +30,12 @@ int8 processorInit(void)
     if(error != BOOS_OK){ break; }
     /* Stage 3 */
     error = interruptInit();
-    if(error != BOOS_OK){ break; }   
+    if(error != BOOS_OK){ break; }
     /* Stage 3 */
     error = timerInit();
+    if(error != BOOS_OK){ break; }
+    /* Stage 3 */
+    error = comparatorInit();
     if(error != BOOS_OK){ break; }    
     /* Stage complete */
   }while(0);

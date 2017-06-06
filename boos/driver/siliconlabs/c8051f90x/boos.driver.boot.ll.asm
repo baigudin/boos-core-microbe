@@ -12,11 +12,9 @@ $INCLUDE (boos.driver.registers.ll.inc)
                 EXTRN       CODE (main)
                 
 ?c_c51startup   SEGMENT     CODE
-v_stack         SEGMENT     IDATA
-
-                ; The operating system stack definition
-                RSEG        v_stack
-                DS          32
+                
+                ISEG AT     80h
+v_stack:        DS          80h
 
 ; ----------------------------------------------------------------------------
 ; Memory blocks definitions for initializing by the startup.
@@ -29,13 +27,13 @@ IDATALEN        EQU         100h
 XDATASTART      EQU         0h
 
 ; Indicates the number of bytes of xdata to be initialized to 0
-XDATALEN        EQU         0h
+XDATALEN        EQU         200h
 
 ; Specifies the pdata address to start initializing to 0
 PDATASTART      EQU         0h
 
 ; Indicates the number of bytes of pdata to be initialized to 0
-PDATALEN        EQU         0h
+PDATALEN        EQU         100h
 
 ; ----------------------------------------------------------------------------
 ; Stack initialization.

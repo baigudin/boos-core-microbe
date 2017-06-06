@@ -13,12 +13,22 @@
 /**
  * Number of possible resources.
  */
-#define RESOURCES_NUMBER (2)
+#define RES_NUMBER (2)
 
 /**
- * Timer resource index mask.
+ * The resource owner ID.
  */
-#define RES_INDEX_MASK (0x3)
+#define RES_OWNER_ID (0x80)
+
+/**
+ * The resource owner mask.
+ */
+#define RES_OWNER_MASK (0x80)
+
+/**
+ * The resource index mask.
+ */
+#define RES_INDEX_MASK (0x01)
 
 /**
  * Timer 0/1 clock in KHz.
@@ -26,9 +36,9 @@
 #define TIMER_CLOCK_KHZ (TIMER_CLOCK / 1000)
 
 /**
- * Locked flag of each HW timer.  
+ * Locked flag of each resource.
  */
-static int8 lock_[RESOURCES_NUMBER];
+static int8 lock_[RES_NUMBER];
 
 /**
  * The driver has been initialized successfully.
@@ -36,7 +46,7 @@ static int8 lock_[RESOURCES_NUMBER];
 static int8 isInitialized_;
 
 /**
- * Tests if value passed is the resource.
+ * Tests if passed value is the resource.
  *
  * @param res an interrupt resource. 
  * @return true if the value if resource.
@@ -49,8 +59,9 @@ static int8 isAlloced(int8 res)
   {
     do{
       if( res == 0 ) { break; }    
+      if( res & RES_OWNER_MASK != RES_OWNER_MASK ) { break; }
       index = res & RES_INDEX_MASK;  
-      if( index < 0 || RESOURCES_NUMBER <= index ) { break; }
+      if( index < 0 || RES_NUMBER <= index ) { break; }
       if( lock_[index] == 0 ) { break; }
       ret = 1;    
     }while(0);
@@ -69,7 +80,7 @@ int8 timerCreate(int8 index)
   int8 res;
   uint8 mask, shift;  
   res = 0;
-  if( 0 <= index && index < RESOURCES_NUMBER )
+  if( 0 <= index && index < RES_NUMBER )
   {
     do{
       if(lock_[index] == 1){ break; }
@@ -83,7 +94,7 @@ int8 timerCreate(int8 index)
       REG_TMOD |= 0x02 << shift;
       /* Alloc the timer */      
       lock_[index] = 1;      
-      res = index & RES_INDEX_MASK | 0x80;      
+      res = index & RES_INDEX_MASK | RES_OWNER_ID;
     }while(0);
   }
   return res;  
@@ -199,6 +210,9 @@ void timerStop(int8 res)
  */   
 int8 timerInit(void)  
 {
+  #ifdef BOOS_RESTARTING
+  int8 i;
+  #endif /* BOOS_RESTARTING */
   int8 error;
   isInitialized_ = 0;   
   #if TIMER_DIVIDER == 48
@@ -225,7 +239,7 @@ int8 timerInit(void)
   error = BOOS_ERROR;
   #endif
   #ifdef BOOS_RESTARTING
-  for(int8 i=0; i<RESOURCES_NUMBER; i++)
+  for(i=0; i<RES_NUMBER; i++)
   {
     lock_[i] = 0;
   }

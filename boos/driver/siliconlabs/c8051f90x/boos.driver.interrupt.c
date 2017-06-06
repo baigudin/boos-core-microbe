@@ -14,17 +14,22 @@
 /**
  * Number of possible resources.
  */
-#define RESOURCES_NUMBER (7)
+#define RES_NUMBER (19)
 
 /**
- * Number of possible interrupt resources.
+ * The resource owner ID.
  */
-#define VECTORS_NUMBER (19)
+#define RES_OWNER_ID (0x80)
 
 /**
- * Interrupt resource source mask.
+ * The resource owner mask.
  */
-#define RES_SOURCE_MASK (0x1f)
+#define RES_OWNER_MASK (0x80)
+
+/**
+ * The resource index mask.
+ */
+#define RES_INDEX_MASK (0x1f)
 
 /**
  * Context of interrupted program by interrupt.
@@ -55,7 +60,7 @@ static Context context_;
 /**
  * Interrupted handler data.
  */
-static Handler handler_[VECTORS_NUMBER];
+static Handler handler_[RES_NUMBER];
 
 /**
  * The driver has been initialized successfully.
@@ -63,7 +68,7 @@ static Handler handler_[VECTORS_NUMBER];
 static int8 isInitialized_;
 
 /**
- * Tests if value passed is the resource.
+ * Tests if passed value is the resource.
  *
  * @param res an interrupt resource. 
  * @return true if the value if resource.
@@ -75,9 +80,10 @@ static int8 isAlloced(int8 res)
   if(isInitialized_)
   {  
     do{
-      if( res == 0 ) { break; }    
-      vec = res & RES_SOURCE_MASK;  
-      if( vec < 0 || VECTORS_NUMBER <= vec ) { break; }
+      if( res == 0 ) { break; } 
+      if( res & RES_OWNER_MASK != RES_OWNER_MASK ) { break; }      
+      vec = res & RES_INDEX_MASK;  
+      if( vec < 0 || RES_NUMBER <= vec ) { break; }
       if( handler_[vec].addr == 0 ) { break; }
       ret = 1;    
     }while(0);
@@ -92,7 +98,7 @@ static int8 isAlloced(int8 res)
  */
 void interruptHandler(uint8 index)
 {
-  if( index < VECTORS_NUMBER && handler_[index].addr != 0 )
+  if( index < RES_NUMBER && handler_[index].addr != 0 )
   {
     handler_[index].addr();
   }
@@ -108,10 +114,10 @@ void interruptHandler(uint8 index)
 int8 interruptCreate(void(*handler)(), int8 source)
 {
   int8 res = 0;
-  if( 0 <= source && source < VECTORS_NUMBER )
+  if( 0 <= source && source < RES_NUMBER )
   {
     handler_[source].addr = handler;
-    res = source & RES_SOURCE_MASK | 0x80;
+    res = source & RES_INDEX_MASK | RES_OWNER_ID;
   }
   return res;
 }
@@ -127,7 +133,7 @@ void interruptRemove(int8 res)
   if( isAlloced(res) )
   {
     interruptDisable(res);
-    vec = res & RES_SOURCE_MASK;    
+    vec = res & RES_INDEX_MASK;    
     handler_[vec].addr = 0;
   }
 }
@@ -144,7 +150,7 @@ int8 interruptDisable(int8 res)
   uint8 val;
   if( isAlloced(res) )
   {
-    vec = res & RES_SOURCE_MASK;
+    vec = res & RES_INDEX_MASK;
     if(0 <= vec && vec < 7)
     {
       val = 0x01 << vec;
@@ -157,7 +163,7 @@ int8 interruptDisable(int8 res)
       ret = REG_EIE1 & val ? 1 : 0;
       REG_EIE1 &= ~val;
     }    
-    else if(15 <= vec && vec < VECTORS_NUMBER)
+    else if(15 <= vec && vec < RES_NUMBER)
     {
       val = 0x01 << (vec - 7);   
       ret = REG_EIE2 & val ? 1 : 0;
@@ -183,7 +189,7 @@ void interruptEnable(int8 res, int8 status)
   uint8 val;
   if( status != 0 && isAlloced(res) )
   {
-    vec = res & RES_SOURCE_MASK;
+    vec = res & RES_INDEX_MASK;
     if(0 <= vec && vec < 7)
     {
       val = 0x01 << vec;
@@ -194,7 +200,7 @@ void interruptEnable(int8 res, int8 status)
       val = 0x01 << (vec - 7);      
       REG_EIE1 |= val;      
     }    
-    else if(15 <= vec && vec < VECTORS_NUMBER)
+    else if(15 <= vec && vec < RES_NUMBER)
     {
       val = 0x01 << (vec - 15);      
       REG_EIE2 |= val;            

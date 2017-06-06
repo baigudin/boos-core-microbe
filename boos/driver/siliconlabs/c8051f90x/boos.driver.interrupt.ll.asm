@@ -10,9 +10,7 @@ $INCLUDE (boos.driver.registers.ll.inc)
 
                 EXTRN       CODE (?c_startup)
                 EXTRN       CODE (_interruptHandler)                
-                
-s_isr           SEGMENT     CODE
-                
+                               
 ; ----------------------------------------------------------------------------
 ; Hardware interrupts table.
 ; ----------------------------------------------------------------------------                
@@ -156,7 +154,7 @@ m_int_18:       clr         REG_IE_BIT_EA
 ; ----------------------------------------------------------------------------
 ; Interrupt service routine.
 ; ----------------------------------------------------------------------------
-                RSEG        s_isr
+                CSEG        AT 09Bh
 m_int_handler: 
                 ; Save the contex
                 push        6h
@@ -175,10 +173,10 @@ m_int_handler:
                 ; Call high-level handler
                 lcall       _interruptHandler
                 ; Restore the contex                
-                pop         REG_PSW    
-                pop         REG_DPL  
+                pop         REG_PSW
+                pop         REG_DPL
                 pop         REG_DPH
-                pop         REG_B  
+                pop         REG_B
                 pop         REG_ACC
                 pop         0h
                 pop         1h
@@ -187,8 +185,8 @@ m_int_handler:
                 pop         4h
                 pop         5h
                 pop         6h
-                pop         7h                
-                setb        REG_IE_BIT_EA                
+                pop         7h
+                setb        REG_IE_BIT_EA
                 reti
 
                 END
