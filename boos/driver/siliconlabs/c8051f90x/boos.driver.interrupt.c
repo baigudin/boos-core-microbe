@@ -212,6 +212,39 @@ void interruptEnable(int8 res, int8 status)
 }
 
 /**
+ * Tests if this interrupt source can be polarized.
+ *
+ * @param res the interrupt resource.  
+ * @return true if this source is polarizing.
+ */  
+int8 interruptIsPolarized(int8 res)
+{
+  int8 ret;
+  if( isAlloced(res) )
+  {
+    switch(res & RES_INDEX_MASK)
+    {
+      case 0:      
+      case 2:        
+      {
+        ret = 1;        
+      }
+      break;
+      default:
+      {
+        ret = 0;
+      }
+      break;
+    }
+  }
+  else  
+  {
+    ret = 0;
+  }
+  return ret;
+}
+
+/**
  * Disables all maskable interrupts.
  *
  * @return global interrupts enable bit value before function was called.

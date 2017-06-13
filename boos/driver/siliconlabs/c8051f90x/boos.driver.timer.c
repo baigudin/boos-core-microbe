@@ -78,20 +78,11 @@ static int8 isAlloced(int8 res)
 int8 timerCreate(int8 index)
 {
   int8 res;
-  uint8 mask, shift;  
   res = 0;
   if( 0 <= index && index < RES_NUMBER )
   {
     do{
       if(lock_[index] == 1){ break; }
-      shift = index * 4;
-      /* Zero the HW timer registers */
-      mask = 0x0f << shift;
-      REG_TMOD &= ~mask;
-      mask = 0x33 << shift;      
-      REG_TCON &= ~mask;
-      /* Set 8-bit auto-reload timer mode */
-      REG_TMOD |= 0x02 << shift;
       /* Alloc the timer */      
       lock_[index] = 1;      
       res = index & RES_INDEX_MASK | RES_OWNER_ID;
@@ -213,37 +204,52 @@ int8 timerInit(void)
   #ifdef BOOS_RESTARTING
   int8 i;
   #endif /* BOOS_RESTARTING */
-  int8 error;
+  int8 error = BOOS_OK;
   isInitialized_ = 0;   
+  
+  REG_TCON &= 0x0F;
+  REG_TCON |= 0x0 << 7  /* Timer 1 owerflow is cleared */
+            | 0x0 << 6  /* Timer 1 is disabled */
+            | 0x0 << 5  /* Timer 0 owerflow is cleared */  
+            | 0x0 << 6; /* Timer 0 is disabled */
+  
+  REG_TMOD =  0x0 << 7  /* Timer 1 enabled when TR1 bit set */
+            | 0x0 << 6  /* Timer 1 incremented by clock defined by T1M bit */
+            | 0x2 << 4  /* Timer 1 is 8-bit Counter/Timer with Auto-Reload */
+            | 0x0 << 3  /* Timer 0 enabled when TR0 bit set */
+            | 0x0 << 2  /* Timer 0 incremented by clock defined by T0M bit */
+            | 0x2 << 0; /* Timer 0 is 8-bit Counter/Timer with Auto-Reload */  
+  
+  REG_CKCON = 0x0 << 7  /* Timer 3 high byte uses the clock defined by the T3XCLK bit in TMR3CN */
+            | 0x0 << 6  /* Timer 3 low byte uses the clock defined by the T3XCLK bit in TMR3CN */
+            | 0x0 << 5  /* Timer 2 high byte uses the clock defined by the T2XCLK bit in TMR2CN */
+            | 0x0 << 4  /* Timer 2 low byte uses the clock defined by the T2XCLK bit in TMR2CN */
+            | 0x0 << 3  /* Timer 1 uses the clock defined by the prescale bits SCA[1:0] */
+            | 0x0 << 2  /* Timer 0/Counter uses the clock defined by the prescale bits SCA[1:0] */
   #if TIMER_DIVIDER == 48
-  REG_CKCON &= 0xf0;
-  REG_CKCON |= 0x02;
-  error = BOOS_OK;  
+            | 0x2 << 0; /* System clock divided by 48 */  
   #elif TIMER_DIVIDER == 12
-  REG_CKCON &= 0xf0;
-  REG_CKCON |= 0x00;
-  error = BOOS_OK;  
+            | 0x0 << 0; /* System clock divided by 12 */    
   #elif TIMER_DIVIDER == 8
-  REG_CKCON &= 0xf0;
-  REG_CKCON |= 0x03;
-  error = BOOS_OK;  
+            | 0x3 << 0; /* System clock divided by 8 */      
   #elif TIMER_DIVIDER == 4
-  REG_CKCON &= 0xf0;
-  REG_CKCON |= 0x01;
-  error = BOOS_OK;
+            | 0x1 << 0; /* System clock divided by 4 */        
   #elif TIMER_DIVIDER == 1
-  REG_CKCON &= 0xf0;
-  REG_CKCON |= 0x0c;
-  error = BOOS_OK;  
-  #else
+            | 0x1 << 3  /* Timer 1 uses the system clock */
+            | 0x1 << 2  /* Timer 0/Counter uses the system clock */    
+            | 0xC << 0; /* System clock divided by 1 */
+  #else /* TIMER_DIVIDER == UNSUPPORTING */
+            | 0x0 << 0; /* System clock divided by 4 */          
   error = BOOS_ERROR;
-  #endif
+  #endif /* TIMER_DIVIDER */
+  
   #ifdef BOOS_RESTARTING
   for(i=0; i<RES_NUMBER; i++)
   {
     lock_[i] = 0;
   }
   #endif /* BOOS_RESTARTING */  
+  
   if(error == BOOS_OK)
   {
     isInitialized_ = 1;  

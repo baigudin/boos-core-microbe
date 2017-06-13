@@ -44,6 +44,14 @@ extern int8 interruptDisable(int8 res);
 extern void interruptEnable(int8 res, int8 status);
 
 /**
+ * Tests if this interrupt source can be polarized.
+ *
+ * @param res the interrupt resource.  
+ * @return true if this source is polarizing.
+ */  
+extern int8 interruptIsPolarized(int8 res);
+
+/**
  * Disables all maskable interrupts.
  *
  * @return global interrupts enable bit value before function was called.
