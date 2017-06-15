@@ -148,9 +148,11 @@ static void handler1(void)
  *
  * @param handler an interrupt handler function. 
  * @param index   an available comparator index.
+ * @param neg a negative input channel value.
+ * @param pos a positive input channel value.
  * @return the comparator resource, or zero if error has been occurred.
  */
-int8 comparatorCreate(void(*handler)(), int8 index)
+int8 comparatorCreate(void(*handler)(), int8 index, int8 neg, int8 pos)
 {
   int8 res = 0;  
   int8 error = BOOS_OK;  
@@ -162,36 +164,36 @@ int8 comparatorCreate(void(*handler)(), int8 index)
       {
         case 0:
         {
+          REG_CPT0MX = (neg & 0xf) << 4  /* Negative Input */
+                     | (pos & 0xf) << 0; /* Positive Input */
+          
+          REG_CPT0MD = 0x1 << 7  /* Must Write 1b */
+                     | 0x1 << 5  /* Comparator Rising-Edge interrupt enabled */
+                     | 0x1 << 4  /* Comparator Falling-Edge interrupt enabled */
+                     | 0x0 << 0; /* Fastest Response Time, Highest Power Consumption */
+          
           REG_CPT0CN = 0x1 << 7  /* Comparator Enabled */
-                     | 0x0 << 5  /* Comparator Rising Edge has not occurred */
+                     | 0x0 << 5  /* Comparator Rising-Edge has not occurred */
                      | 0x0 << 4  /* Comparator Falling-Edge has not occurred */
                      | 0x3 << 2  /* Positive Hysteresis */
                      | 0x3 << 0; /* Negative Hysteresis */
-          
-          REG_CPT0MD = 0x1 << 7  /* Must Write 1b */
-                     | 0x1 << 5  /* Comparator Rising-edge interrupt enabled */
-                     | 0x1 << 4  /* Comparator Falling-edge interrupt enabled */
-                     | 0x0 << 0; /* Fastest Response Time, Highest Power Consumption */
-          
-          REG_CPT0MX = 0xf << 4  /* Negative Input is Ground */
-                     | 0xf << 0; /* Positive Input is VDD/DC+ Supply Voltage */
         }
         break;          
         case 1:
         {
+          REG_CPT1MX = (neg & 0xf) << 4  /* Negative Input */
+                     | (pos & 0xf) << 0; /* Positive Input */
+          
+          REG_CPT1MD = 0x1 << 7  /* Must Write 1b */
+                     | 0x1 << 5  /* Comparator Rising-Edge interrupt enabled */
+                     | 0x1 << 4  /* Comparator Falling-Edge interrupt enabled */
+                     | 0x0 << 0; /* Fastest Response Time, Highest Power Consumption */
+
           REG_CPT1CN = 0x1 << 7  /* Comparator Enabled */
-                     | 0x0 << 5  /* Comparator Rising Edge has not occurred */
+                     | 0x0 << 5  /* Comparator Rising-Edge has not occurred */
                      | 0x0 << 4  /* Comparator Falling-Edge has not occurred */
                      | 0x3 << 2  /* Positive Hysteresis */
                      | 0x3 << 0; /* Negative Hysteresis */
-          
-          REG_CPT1MD = 0x1 << 7  /* Must Write 1b */
-                     | 0x1 << 5  /* Comparator Rising-edge interrupt enabled */
-                     | 0x1 << 4  /* Comparator Falling-edge interrupt enabled */
-                     | 0x0 << 0; /* Fastest Response Time, Highest Power Consumption */
-          
-          REG_CPT1MX = 0xf << 4  /* Negative Input is Ground */
-                     | 0xf << 0; /* Positive Input is VDD/DC+ Supply Voltage */          
         }
         break;
       }
@@ -222,8 +224,8 @@ void comparatorRemove(int8 res)
     {
       case 0:
       {
-        REG_CPT0CN = 0x1 << 7  /* Comparator Disabled */
-                   | 0x0 << 5  /* Comparator Rising Edge has not occurred */
+        REG_CPT0CN = 0x0 << 7  /* Comparator Disabled */
+                   | 0x0 << 5  /* Comparator Rising-Edge has not occurred */
                    | 0x0 << 4  /* Comparator Falling-Edge has not occurred */
                    | 0x0 << 2  /* Positive Hysteresis Disabled */
                    | 0x0 << 0; /* Negative Hysteresis Disabled */
@@ -232,7 +234,7 @@ void comparatorRemove(int8 res)
       case 1:
       {
         REG_CPT1CN = 0x0 << 7  /* Comparator Disabled */
-                   | 0x0 << 5  /* Comparator Rising Edge has not occurred */
+                   | 0x0 << 5  /* Comparator Rising-Edge has not occurred */
                    | 0x0 << 4  /* Comparator Falling-Edge has not occurred */
                    | 0x0 << 2  /* Positive Hysteresis Disabled */
                    | 0x0 << 0; /* Negative Hysteresis Disabled */
@@ -243,36 +245,6 @@ void comparatorRemove(int8 res)
     cmp_[index].handler.ext = 0;    
     cmp_[index].inter.res = 0;
     cmp_[index].lock = 0;
-  }  
-}
-
-/**
- * Selects the comparator input channels.
- *
- * @param res the comparator resource.
- * @param neg a negative input channel value.
- * @param pos a positive input channel value.
- */
-void comparatorSetInput(int8 res, int8 neg, int8 pos)
-{
-  int8 index = getIndex(res);
-  if( index != -1 )
-  {
-    switch(index)
-    {
-      case 0:
-      {
-        REG_CPT0MX = (neg & 0xf) << 4  /* Negative Input is Ground */
-                   | (pos & 0xf) << 0; /* Positive Input is VDD/DC+ Supply Voltage */
-      }
-      break;          
-      case 1:
-      {
-        REG_CPT1MX = (neg & 0xf) << 4  /* Negative Input is Ground */
-                   | (pos & 0xf) << 0; /* Positive Input is VDD/DC+ Supply Voltage */
-      }
-      break;
-    }    
   }  
 }
 
@@ -333,13 +305,13 @@ int8 comparatorInit(void)
     {
       case 0:
       {
-        cmp_[i].handler.drv = handler0;            
+        cmp_[i].handler.drv = &handler0;            
         cmp_[i].inter.source = 12;
       }
       break;      
       case 1:
       {
-        cmp_[i].handler.drv = handler1;            
+        cmp_[i].handler.drv = &handler1;            
         cmp_[i].inter.source = 13;        
       }
       break;

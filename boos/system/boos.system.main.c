@@ -6,7 +6,8 @@
  * @license   http://baigudin.software/license/
  * @link      http://baigudin.software
  */
-#include "boos.main.h" 
+#include "boos.main.h"
+#include "boos.board.h"
 #include "boos.driver.processor.h"
 #include "boos.driver.interrupt.h"
 
@@ -20,8 +21,11 @@ static int8 systemInit(void)
   int8 error = BOOS_OK;
   do{
     /* Stage 1 */
-    error = processorInit();    
+    error = processorInit();
     if(error != BOOS_OK){ break; }
+    /* Stage 2 */
+    error = boardInit();
+    if(error != BOOS_OK){ break; }    
     /* Stage complete */
   }while(0);
   /* Call user main function */

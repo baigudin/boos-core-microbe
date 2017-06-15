@@ -16,9 +16,11 @@
  *
  * @param handler an interrupt handler function. 
  * @param index   an available comparator index.
+ * @param neg a negative input channel value.
+ * @param pos a positive input channel value.
  * @return the comparator resource, or zero if error has been occurred.
  */
-extern int8 comparatorCreate(void(*handler)(), int8 index);
+extern int8 comparatorCreate(void(*handler)(), int8 index, int8 neg, int8 pos);
 
 /**
  * Removes the comparator resource.
@@ -26,15 +28,6 @@ extern int8 comparatorCreate(void(*handler)(), int8 index);
  * @param res the comparator resource.
  */
 extern void comparatorRemove(int8 res);
-
-/**
- * Selects the comparator input channels.
- *
- * @param res the comparator resource.
- * @param neg a negative input channel value.  
- * @param pos a positive input channel value. 
- */
-extern void comparatorSetInput(int8 res, int8 neg, int8 pos);
 
 /**
  * Locks the comparator interrupt source.
