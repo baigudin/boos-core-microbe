@@ -36,12 +36,19 @@
  */
 typedef struct _Context
 {
-  uint8 rn[8];  
+  uint8 rn7;  
   uint8 acc;  
   uint8 b;
   uint8 dph;  
   uint8 dpl;    
-  uint8 psw;      
+  uint8 psw;   
+  uint8 rn6;
+  uint8 rn5;
+  uint8 rn4;
+  uint8 rn3;
+  uint8 rn2;
+  uint8 rn1;
+  uint8 rn0;  
 } Context;
 
 /**
@@ -114,7 +121,25 @@ void interruptHandler(uint8 index)
 int8 interruptCreate(void(*handler)(), int8 source)
 {
   int8 res = 0;
-  if( 0 <= source && source < RES_NUMBER )
+  if( 0 <= source && source < RES_NUMBER 
+      /* TODO: RTC0CN.2 bit is not being cleared by ISR. 
+         The source is locked till the ISR will do clearing of the bit */    
+      && source != 8 
+      /* TODO: ADC0STA.5 bit is not being cleared by ISR. 
+         The source is locked till the ISR will do clearing of the bit */    
+      && source != 10   
+      /* TODO: PCA0CN.n bits are not being cleared by ISR. 
+         The source is locked till the ISR will do clearing of the bits */    
+      && source != 11
+      /* TODO: VDM0CN.5 and VDM0CN.4 bits are not being cleared by ISR. 
+         The source is locked till the ISR will do clearing of the bits */    
+      && source != 15
+      /* TODO: RTC0CN.5 bit is not being cleared by ISR. 
+         The source is locked till the ISR will do clearing of the bit */    
+      && source != 17
+      /* TODO: SPI1CN.7-4 bits are not being cleared by ISR. 
+         The source is locked till the ISR will do clearing of the bits */      
+      && source != 18)
   {
     handler_[source].addr = handler;
     res = source & RES_INDEX_MASK | RES_OWNER_ID;

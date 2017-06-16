@@ -43,8 +43,10 @@ typedef struct _Handler
   
   /**
    * External interrupt handler.
+   *
+   * @param out an output comparator value.
    */  
-  void(*ext)();  
+  void(*ext)(int8);  
   
 } Handler;
 
@@ -128,7 +130,7 @@ static void handler0(void)
 {
   if(cmp_[0].handler.ext != 0)
   {
-    cmp_[0].handler.ext();
+    cmp_[0].handler.ext( REG_CPT0CN & 0x40 ? 1 : 0 );
   }
 }
 
@@ -139,7 +141,7 @@ static void handler1(void)
 {
   if(cmp_[1].handler.ext != 0)
   {  
-    cmp_[1].handler.ext();  
+    cmp_[1].handler.ext( REG_CPT1CN & 0x40 ? 1 : 0 );  
   }
 }
 
