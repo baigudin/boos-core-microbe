@@ -293,11 +293,8 @@ void comparatorIntEnable(int8 res, int8 status)
  */
 int8 comparatorInit(void)  
 {  
-  #ifdef BOOS_RESTARTING
   int8 i;
-  #endif /* BOOS_RESTARTING */  
   isInitialized_ = 0;   
-  #ifdef BOOS_RESTARTING
   for(i=0; i<RES_NUMBER; i++)
   {
     cmp_[i].lock = 0;
@@ -324,6 +321,7 @@ int8 comparatorInit(void)
     }
     
   }
+  #ifdef BOOS_RESTARTING  
   /* Disable the comparators */
   REG_CPT0CN = 0x0;
   REG_CPT1CN = 0x0;

@@ -129,7 +129,9 @@ void timerSetPeriod(int8 res, int16 us)
       time = us;
       value = time * TIMER_CLOCK_KHZ;
       value = value / 1000;
-      /* If overflow has been occurred, set max value */
+      /* If overflow has been occurred, set max value 
+         The max value of passed time in microseconds 
+         for the eight-bit timer is 503 us */
       if(value >> 8 > 0)
       {
         reg = 0x00;

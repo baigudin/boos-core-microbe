@@ -241,7 +241,7 @@ m_int_handler:
                 push        REG_DPH
                 push        REG_DPL
                 push        REG_PSW
-                mov         REG_PSW, #0h                
+                mov         REG_PSW, #0h
                 push        6h
                 push        5h
                 push        4h
