@@ -70,4 +70,3 @@ extern cstring* memoryStrcat(cstring* dst, const cstring* src);
 extern int32 memoryStrcmp(const cstring* str1, const cstring* str2);
 
 #endif /* BOOS_UTIL_MEMORY_H_ */
-

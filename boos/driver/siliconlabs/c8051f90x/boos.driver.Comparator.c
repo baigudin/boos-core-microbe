@@ -198,6 +198,7 @@ int8 comparatorCreate(void(*handler)(), int8 index, int8 neg, int8 pos)
                      | 0x3 << 0; /* Negative Hysteresis */
         }
         break;
+        default: break;
       }
       cmp_[index].inter.res = interruptCreate(cmp_[index].handler.drv, cmp_[index].inter.source);
       if(cmp_[index].inter.res == 0)
@@ -242,6 +243,7 @@ void comparatorRemove(int8 res)
                    | 0x0 << 0; /* Negative Hysteresis Disabled */
       }
       break;
+      default: break;
     }
     interruptRemove(cmp_[index].inter.res);
     cmp_[index].handler.ext = 0;    
