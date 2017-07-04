@@ -34,7 +34,7 @@
 /**
  * Context of interrupted program by interrupt.
  */
-typedef struct _Context
+struct Context
 {
   uint8 rn7;  
   uint8 acc;  
@@ -49,25 +49,25 @@ typedef struct _Context
   uint8 rn2;
   uint8 rn1;
   uint8 rn0;  
-} Context;
+};
 
 /**
  * Interrupted handler data.
  */
-typedef struct _Handler
+struct Handler
 {
   void(*addr)();
-} Handler;
+};
 
 /**
  * Context of interrupted program by interrupt.
  */
-static Context context_;
+static struct Context context_;
 
 /**
  * Interrupted handler data.
  */
-static Handler handler_[RES_NUMBER];
+static struct Handler handler_[RES_NUMBER];
 
 /**
  * The driver has been initialized successfully.

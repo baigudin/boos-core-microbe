@@ -51,7 +51,7 @@ static int8 systemInit(void)
  * 
  * @return error code or zero.
  */   
-int16 main(void)
+int main(void)
 {
   return systemInit();
 }

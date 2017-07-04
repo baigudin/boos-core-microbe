@@ -34,7 +34,7 @@
 /**
  * Comparator interrupt handlers.
  */  
-typedef struct _Handler
+struct Handler
 {
   /**
    * The driver interrupt handler.
@@ -48,12 +48,12 @@ typedef struct _Handler
    */  
   void(*ext)(int8);  
   
-} Handler;
+};
 
 /**
  * Comparator interrupt data.
  */  
-typedef struct _Interrupt
+struct Interrupt
 {
   /**
    * The driver interrupt resource.
@@ -65,7 +65,7 @@ typedef struct _Interrupt
    */  
   int8 source;
  
-} Interrupt; 
+}; 
 
 /**
  * Comparator contex.
@@ -80,12 +80,12 @@ typedef struct _Comparator
   /**
    * Comparator interrupt handlers.
    */  
-  Handler handler;  
+  struct Handler handler;  
 
   /**
    * Comparator interrupt data.
    */  
-  Interrupt inter;    
+  struct Interrupt inter;    
 
 } Comparator;
 
