@@ -1,6 +1,6 @@
 # BOOS Microbe Core
 
-**The evolving of this ideology is paused for some time**
+**THE EVOLVING OF THIS IDEOLOGY IS PAUSED FOR SOME TIME**
 
 [Homepage](http://baigudin.software/boos/) | [Events](http://baigudin.software/events/) | [About Us](http://baigudin.software/about/project/) | [Contact Us](http://baigudin.software/contact/)<br/><br/>
 
