@@ -1,9 +1,9 @@
-                  BAIGUDIN SOFTWARE TRIAL LICENSE
+                  EMBEDDED TEAM TRIAL LICENSE
 
 THIS END USER LICENSE AGREEMENT (EULA) IS A LEGAL AGREEMENT BETWEEN YOU 
 (EITHER AS AN INDIVIDUAL OR ON BEHALF OF AN ENTITY) AND SERGEY BAIGUDIN 
-(RIGHT HOLDER) REGARDING YOUR USE OF BAIGUDIN'S SOFTWARE. IF YOU DO NOT 
-AGREE TO ALL OF THE TERMS OF THIS EULA, DO NOT USE OR COPY THIS SOFTWARE.
+(RIGHT HOLDER) REGARDING YOUR USE OF EMBEDDED TEAM'S SOFTWARE. IF YOU DO 
+NOT AGREE TO ALL OF THE EULA TERMS, DO NOT USE OR COPY THE SOFTWARE.
 
 1.   SUMMARY
 
@@ -27,13 +27,13 @@ AGREE TO ALL OF THE TERMS OF THIS EULA, DO NOT USE OR COPY THIS SOFTWARE.
      or together.
 2.4. You CAN execute and debug results of the compilations.
 2.5. You CANNOT modify the software and its source code.
-2.3. You CANNOT separate any source code parts of the software 
+2.6. You CANNOT separate any source code parts of the software 
      in all cases.
-2.3. You CANNOT create your software by using basic principles 
+2.7. You CANNOT create your software by using basic principles 
      of the software.
-2.3. You CANNOT use the software and all programs, which was created 
+2.8. You CANNOT use the software and all programs, which was created 
      by using the software, when the trial time period is over.
-2.4. You CANNOT transfer the non-exclusive license to use the software 
+2.9. You CANNOT transfer the non-exclusive license to use the software 
      to other individuals or entities.
 
 3.   INTELLECTUAL PROPERTY OWNERSHIP
@@ -56,5 +56,6 @@ AGREE TO ALL OF THE TERMS OF THIS EULA, DO NOT USE OR COPY THIS SOFTWARE.
      to contact the right holder for any reason, please contact me at:
 
      Sergey Baigudin
-     E-mail: sergey@baigudin.software
-     Web site: www.baigudin.software
+     Phone number: +7.812.907.6432
+     E-mail: info@embedded.team
+     Web site: www.embedded.team
