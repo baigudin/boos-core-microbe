@@ -39,24 +39,32 @@ static int8 kernelInitialize(void)
             }  
             stage++;
             
-        /* Stage complete */            
+        /* Stage 3: call user program */            
         case 3:
+            CpuInterrupt_enableAll(1);
+            error = Program_start();
+            CpuInterrupt_disableAll();
+            if(error != SYS_OK)
+            {
+                break;
+            }
+            stage++;        
+            
+        /* Stage complete */            
+        case 4:
             stage = 0;
             break;
             
         /* Stage error */
         default:
+            error = SYS_ERROR;            
             stage = -1;
             break;
     }
-    while(0);
-    /* Call user main function */
-    if(error == SYS_OK && stage == 0)
+    if(stage != 0 && error == SYS_OK)
     {
-        CpuInterrupt_enableAll(1);  
-        error = Program_start();
-        CpuInterrupt_disableAll();    
-    }
+        error = SYS_ERROR;
+    }      
     return error;
 }
 

@@ -78,8 +78,7 @@ int8 Cpu_initialize(void)
             stage = -1;
             break;
     }
-    while(0);
-    if(stage != 0)
+    if(stage != 0 && error == SYS_OK)
     {
         error = SYS_ERROR;
     }    

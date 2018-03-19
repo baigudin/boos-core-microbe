@@ -105,19 +105,29 @@ static int8 isInitialized_;
  */
 static int8 getIndex(int8 res)
 {
-    int8 index = -1;
+    int8 index;    
+    int8 ret = -1;
     if(isInitialized_)
-    {
-        if(  ( res != 0 ) 
-          && ( res & RES_OWNER_MASK == RES_OWNER_MASK ) 
-          && ( res & RES_INDEX_MASK >= 0 ) 
-          && ( res & RES_INDEX_MASK < RES_NUMBER )
-          && ( cmp_[res & RES_INDEX_MASK].lock != 0 ) )
+    {  
+        if( res != 0 ) 
         {
-            index = res & RES_INDEX_MASK;
+            if( (res & RES_OWNER_MASK) == RES_OWNER_MASK ) 
+            {
+                index = res & RES_INDEX_MASK;
+                if( index >= 0 ) 
+                {
+                    if( index < RES_NUMBER )
+                    {
+                        if( cmp_[index].lock != 0 )
+                        {
+                            ret = index;                            
+                        }
+                    }
+                }
+            }
         }
     }
-    return index;
+    return ret;
 }
 
 /**

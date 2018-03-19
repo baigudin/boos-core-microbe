@@ -1,8 +1,8 @@
 ; ----------------------------------------------------------------------------
-; Silicon Labs C8051F9x MCUs booting startup.
+; Silicon Labs C8051F902 MCU booting startup.
 ;
 ; @author    Sergey Baigudin, sergey@baigudin.software
-; @copyright 2017 Sergey Baigudin
+; @copyright 2017-2018, Sergey Baigudin
 ; @license   http://embedded.team/license/
 ; ----------------------------------------------------------------------------
 $INCLUDE (CpuRegisters.ll.inc)
@@ -19,13 +19,13 @@ v_stack:        DS          80h
 ; Memory blocks definitions for initializing by the startup.
 ; ----------------------------------------------------------------------------
 
-; Indicates the number of bytes of idata that are to be initialized to 0
+; Indicates the number of bytes of IDATA that are to be initialized to 0
 IDATALEN        EQU         100h
 
-; Specifies the xdata address to start initializing to 0
+; Specifies the XDATA address to start initializing to 0
 XDATASTART      EQU         0h
 
-; Indicates the number of bytes of xdata to be initialized to 0
+; Indicates the number of bytes of XDATA to be initialized to 0
 XDATALEN        EQU         200h
 
 ; Specifies the pdata address to start initializing to 0
@@ -96,16 +96,19 @@ PPAGE           EQU         0
                 RSEG        ?c_c51startup
 ?c_startup:                
 m_bootstrap:    
-                ; Disable watchdog timer
+                ; Disable watchdog timer, as it reset 
+                ; MCU while it is being initialized.
                 anl         REG_PCA0MD, #0xbf
-                ; Zero internal data memory
+                
+                ; Fill the internal data (IDATA) memory with zero
                 IF          IDATALEN <> 0
                 mov         r0, #IDATALEN - 1
                 clr         a
 mc_idata:       mov         @r0, a
                 djnz        r0, mc_idata
                 ENDIF
-                ; Zero external data memory
+                
+                ; Fill the external data (XDATA) memory with zero 
                 IF          XDATALEN <> 0
                 mov         dptr, #XDATASTART
                 mov         r7,   #LOW(XDATALEN)
@@ -120,11 +123,13 @@ mc_xdata:       movx        @dptr, a
                 djnz        r7, mc_xdata
                 djnz        r6, mc_xdata
                 ENDIF
+                
                 ; Set a page of external data memory
                 IF          PPAGEENABLE <> 0
                 mov         REG_P2, #PPAGE
                 ENDIF
-                ; Zero a page of external data memory
+                
+                ; Fill a page of external data memory with zero
                 IF          PDATALEN <> 0
                 mov         r0, #LOW(PDATASTART)
                 mov         r7, #LOW(PDATALEN)
@@ -148,7 +153,7 @@ mc_pdata:       movx        @r0, a
                 IF          PBPSTACK <> 0
                 EXTRN       DATA (?c_pbp)
                 mov         ?c_pbp, #LOW(PBPSTACKTOP)
-                ENDIF                
+                ENDIF
 
                 mov         sp, #v_stack-1
                 lcall       main

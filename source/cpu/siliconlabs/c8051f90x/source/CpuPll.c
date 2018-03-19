@@ -37,7 +37,7 @@ int8 CpuPll_initialize(void)
     /* Wait SYSCLK will be ready */
     do
     {
-      val = REG_CLKSEL & 0x80;
+        val = REG_CLKSEL & 0x80;
     }
     while(val == 0x0);
     error = SYS_OK;

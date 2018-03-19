@@ -52,18 +52,28 @@ static int8 isInitialized_;
  */
 static int8 isAlloced(int8 res)
 {
+    int8 index;    
     int8 ret = 0;
     if(isInitialized_)
-    {
-        if(  ( res != 0 ) 
-          && ( res & RES_OWNER_MASK == RES_OWNER_MASK ) 
-          && ( res & RES_INDEX_MASK >= 0 ) 
-          && ( res & RES_INDEX_MASK < RES_NUMBER )
-          && ( lock_[res & RES_INDEX_MASK] != 0 ) )
+    {  
+        if( res != 0 ) 
         {
-            ret = 1;
-        }        
-    }
+            if( (res & RES_OWNER_MASK) == RES_OWNER_MASK ) 
+            {
+                index = res & RES_INDEX_MASK;
+                if( index >= 0 ) 
+                {
+                    if( index < RES_NUMBER )
+                    {
+                        if( lock_[index] != 0 )
+                        {
+                            ret = 1;                            
+                        }
+                    }
+                }
+            }
+        }
+    }    
     return ret;
 }
 
