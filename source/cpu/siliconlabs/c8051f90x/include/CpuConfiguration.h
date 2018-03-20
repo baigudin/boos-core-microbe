@@ -14,7 +14,7 @@
 #define SOURCE_CLOCK (24500000)
   
 /**
- * CPU clock in Hz.
+ * System or CPU clock in Hz.
  */  
 #define CPU_CLOCK (24300000)
 
@@ -26,8 +26,17 @@
 #define TIMER_DIVIDER (48)
 
 /**
- * Timer 0/1 clock in Hz.
+ * Programmable Counter Array clock source.
+ *
+ * The value must equal to:
+ * 0 - system clock divided by 12.
+ * 1 - system clock divided by 4.
+ * 2 - timer 0 overflow.
+ * 3 - high-to-low transitions on ECI (max rate = system clock divided by 4).
+ * 4 - system clock.
+ * 5 - external clock divided by 8 (synchronized with the system clock).
+ * 6 - SmaRTClock divided by 8 (synchronized with the system clock and only available on F912 and F902 devices).
  */  
-#define TIMER_CLOCK (CPU_CLOCK / TIMER_DIVIDER)
+#define PCA_CLOCK_SOURCE (4)
 
 #endif /* CPU_CONFIGURATION_H_ */

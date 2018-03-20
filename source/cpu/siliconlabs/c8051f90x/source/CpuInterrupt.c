@@ -78,7 +78,7 @@ static int8 isInitialized_;
  * Tests if passed value is the resource.
  *
  * @param res - an interrupt resource. 
- * @return true if the value if resource.
+ * @return true if the value is a resource.
  */
 static int8 isAlloced(int8 res)
 {

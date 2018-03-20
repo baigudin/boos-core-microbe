@@ -12,6 +12,16 @@ $INCLUDE (CpuRegisters.ll.inc)
                 
 ?c_c51startup   SEGMENT     CODE
                 
+; ----------------------------------------------------------------------------
+; Stack allocation.
+;
+; The stack model of ABI has to be Full Ascending, which means that the stack 
+; has stack pointer, pointed to the last used location, and grows towards 
+; increasing memory addresses.
+;
+; The stack is locked in internal data (IDATA) memory and occupies upper 
+; 128 Bytes of memory.
+; ----------------------------------------------------------------------------                
                 ISEG AT     80h
 v_stack:        DS          80h
 
@@ -19,141 +29,47 @@ v_stack:        DS          80h
 ; Memory blocks definitions for initializing by the startup.
 ; ----------------------------------------------------------------------------
 
-; Indicates the number of bytes of IDATA that are to be initialized to 0
-IDATALEN        EQU         100h
+; Internal data memory (IDATA) definition in byte
+IDATA_LENGTH    EQU         100h
 
-; Specifies the XDATA address to start initializing to 0
-XDATASTART      EQU         0h
+; External data memory (XDATA) definition in byte
+XDATA_LENGTH    EQU         200h
 
-; Indicates the number of bytes of XDATA to be initialized to 0
-XDATALEN        EQU         200h
+; External data memory page (PDATA) definition
+PDATA_PAGE      EQU         0h
 
-; Specifies the pdata address to start initializing to 0
-PDATASTART      EQU         0h
-
-; Indicates the number of bytes of pdata to be initialized to 0
-PDATALEN        EQU         100h
-
-; ----------------------------------------------------------------------------
-; Stack initialization.
-; ----------------------------------------------------------------------------
-
-; Indicates whether or not the small model reentrant stack pointer ( ?C_IBP )
-; should be initialized. A value of 1 causes this pointer to be initialized. A
-; value of 0 prevents initialization of this pointer.
-IBPSTACK        EQU         0h
-
-; Specifies the top start address of the small model reentrant stack area.
-; The default is 0xFF in idata memory.
-IBPSTACKTOP     EQU         0ffh + 1
-
-; Indicates whether or not the large model reentrant stack pointer ( ?C_XBP )
-; should be initialized. A value of 1 causes this pointer to be initialized. A
-; value of 0 prevents initialization of this pointer.
-XBPSTACK        EQU         0h
-
-; Specifies the top start address of the large model reentrant stack area.
-; The default is 0xFFFF in xdata memory.
-XBPSTACKTOP     EQU         0ffffh + 1
-
-; Indicates whether the compact model reentrant stack pointer ( ?C_PBP )
-; should be initialized. A value of 1 causes this pointer to be initialized. A
-; value of 0 prevents initialization of this pointer.
-PBPSTACK        EQU         0h
-
-; Specifies the top start address of the compact model reentrant stack area.
-; The default is 0xFF in pdata memory.
-PBPSTACKTOP     EQU         0ffh + 1
-
-; ----------------------------------------------------------------------------
-; Compact Memory Model initialization.
-; ----------------------------------------------------------------------------
-
-; Enables (a value of 1) or disables (a value of 0) the initialization of port 2 of
-; the 8051 device. The default is 0. The addressing of port 2 allows the
-; mapping of 256 byte variable memory in any arbitrary xdata page.
-PPAGEENABLE     EQU         0
-
-; Specifies the value to write to Port 2 of the 8051 for pdata memory access.
-; This value represents the xdata memory page to use for pdata. This is the
-; upper 8 bits of the absolute address range to use for pdata.
-;
-; For example, if the pdata area begins at address 1000h (page 10h) in the
-; xdata memory, PPAGEENABLE should be set to 1, and PPAGE should be
-; set to 10h. The BL51 Linker/Locator must contain a value between 1000h
-; and 10FFh in the PDATA directive. For example:
-;
-; BL51 <input modules> PDATA (1050H)
-;
-; Neither BL51 nor Cx51 checks to see if the PDATA directive and the PPAGE
-; assembler constant are correctly specified. You must ensure that these
-; parameters contain suitable values.
-PPAGE           EQU         0
-                
 ; ----------------------------------------------------------------------------
 ; The bootstrap routine.
 ; ----------------------------------------------------------------------------
                 RSEG        ?c_c51startup
 ?c_startup:                
 m_bootstrap:    
-                ; Disable watchdog timer, as it reset 
+                ; Disable watchdog timer, as it resets 
                 ; MCU while it is being initialized.
-                anl         REG_PCA0MD, #0xbf
+                anl         REG_PCA0MD, #0BFh
                 
-                ; Fill the internal data (IDATA) memory with zero
-                IF          IDATALEN <> 0
-                mov         r0, #IDATALEN - 1
+                ; Fill the internal data memory (IDATA) with zero
+                mov         r0, #IDATA_LENGTH - 1
                 clr         a
 mc_idata:       mov         @r0, a
                 djnz        r0, mc_idata
-                ENDIF
                 
-                ; Fill the external data (XDATA) memory with zero 
-                IF          XDATALEN <> 0
-                mov         dptr, #XDATASTART
-                mov         r7,   #LOW(XDATALEN)
-                IF          LOW(XDATALEN) <> 0
-                mov         r6, #HIGH(XDATALEN) + 1
+                ; Fill the external data memory (XDATA) with zero 
+                mov         dptr, #0
+                mov         r7, #LOW(XDATA_LENGTH)
+                IF          LOW(XDATA_LENGTH) <> 0
+                mov         r6, #HIGH(XDATA_LENGTH) + 1
                 ELSE
-                mov         r6, #HIGH(XDATALEN)
+                mov         r6, #HIGH(XDATA_LENGTH)
                 ENDIF
                 clr         a
 mc_xdata:       movx        @dptr, a
                 inc         dptr
                 djnz        r7, mc_xdata
                 djnz        r6, mc_xdata
-                ENDIF
                 
-                ; Set a page of external data memory
-                IF          PPAGEENABLE <> 0
-                mov         REG_P2, #PPAGE
-                ENDIF
-                
-                ; Fill a page of external data memory with zero
-                IF          PDATALEN <> 0
-                mov         r0, #LOW(PDATASTART)
-                mov         r7, #LOW(PDATALEN)
-                clr         a
-mc_pdata:       movx        @r0, a
-                inc         r0
-                djnz        r7, mc_pdata
-                ENDIF
-                
-                IF          IBPSTACK <> 0
-                EXTRN       DATA (?c_ibp)
-                mov         ?c_ibp, #LOW(IBPSTACKTOP)
-                ENDIF
-
-                IF          XBPSTACK <> 0
-                EXTRN       DATA (?c_xbp)
-                mov         ?c_xbp, #HIGH(XBPSTACKTOP)
-                mov         ?c_xbp+1, #LOW(XBPSTACKTOP)
-                ENDIF
-
-                IF          PBPSTACK <> 0
-                EXTRN       DATA (?c_pbp)
-                mov         ?c_pbp, #LOW(PBPSTACKTOP)
-                ENDIF
+                ; Set the external data memory page (PDATA)
+                mov         REG_EMI0CN, #PDATA_PAGE               
 
                 mov         sp, #v_stack-1
                 lcall       main

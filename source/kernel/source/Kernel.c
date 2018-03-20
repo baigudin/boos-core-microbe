@@ -5,10 +5,10 @@
  * @copyright 2017-2018, Sergey Baigudin
  * @license   http://embedded.team/license/
  */
-#include "Program.h"
+#include "Cpu.h" 
 #include "Board.h"
-#include "Cpu.h"
-#include "CpuInterrupt.h"
+#include "Thread.h"
+#include "Debug.h"
 
 /**
  * Initializes the operating system.
@@ -33,17 +33,33 @@ static int8 kernelInitialize(void)
         /* Stage 2 */
         case 2:
             error = Board_initialize();
+            #ifdef BOOS_DEBUG
+            Debug_signal();
+            #endif        
             if(error != SYS_OK)
             {
                 break; 
             }  
             stage++;
             
-        /* Stage 3: call user program */            
+        /* Stage 3 */            
         case 3:
-            CpuInterrupt_enableAll(1);
-            error = Program_start();
-            CpuInterrupt_disableAll();
+            error = Thread_initialize();
+            #ifdef BOOS_DEBUG
+            Debug_signal();
+            #endif         
+            if(error != SYS_OK)
+            {
+                break;
+            }
+            stage++;                    
+            
+        /* Stage 4 */            
+        case 4:
+            error = Thread_execute();
+            #ifdef BOOS_DEBUG
+            Debug_signal();
+            #endif         
             if(error != SYS_OK)
             {
                 break;
@@ -51,7 +67,7 @@ static int8 kernelInitialize(void)
             stage++;        
             
         /* Stage complete */            
-        case 4:
+        case 5:
             stage = 0;
             break;
             

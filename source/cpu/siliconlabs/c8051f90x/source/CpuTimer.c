@@ -30,6 +30,11 @@
 #define RES_INDEX_MASK (0x01)
 
 /**
+ * Timer 0/1 clock in Hz.
+ */  
+#define TIMER_CLOCK (CPU_CLOCK / TIMER_DIVIDER)
+
+/**
  * Timer 0/1 clock in KHz.
  */  
 #define TIMER_CLOCK_KHZ (TIMER_CLOCK / 1000)
@@ -47,8 +52,8 @@ static int8 isInitialized_;
 /**
  * Tests if passed value is the resource.
  *
- * @param res - an interrupt resource. 
- * @return true if the value if resource.
+ * @param res - an driver resource. 
+ * @return true if the value is a resource.
  */
 static int8 isAlloced(int8 res)
 {
