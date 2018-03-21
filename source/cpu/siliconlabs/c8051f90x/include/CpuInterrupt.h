@@ -11,6 +11,126 @@
 #include "Error.h"
 
 /**
+ * MPU interrupt available sources.
+ */
+enum CpuInterruptSource
+{    
+    /**
+     * External Interrupt 0.
+     */    
+    CIS_INT0 = 0,
+    
+    /**     
+     * Timer 0 Overflow.
+     */    
+    CIS_TIMER0 = 1,
+    
+    /**     
+     * External Interrupt 1.
+     */    
+    CIS_INT1 = 2,
+    
+    /**     
+     * Timer 1 Overflow.
+     */    
+    CIS_TIMER1 = 3,
+    
+    /**     
+     * UART 0.
+     */    
+    CIS_UART0 = 4,
+    
+    /**     
+     * Timer 2 Overflow
+     */    
+    CIS_TIMER2 = 5,
+    
+    /**     
+     * SPI 0.
+     */    
+    CIS_SPI0 = 6,
+    
+    /**     
+     * SMB 0.
+     */    
+    CIS_SMB0 = 7,
+
+    /**     
+     * SmaRTClock Alarm.
+     *
+     * NOTE: RTC0CN.2 bit is not cleared by ISR, therefore
+     * the source is locked till the ISR will do clearing of the bit.
+     */    
+    CIS_RTCLOCK = 8,
+    
+    /**     
+     * ADC0 Window Comparator.
+     */    
+    CIS_ADC0_WIN_CMP = 9,
+    
+    /**     
+     * ADC0 End of Conversion.
+     *
+     * NOTE: ADC0STA.5 bit is not cleared by ISR, therefore 
+     * the source is locked till the ISR will do clearing of the bit.        
+     */    
+    CIS_ADC0_END = 10,
+    
+    /**     
+     * Programmable Counter Array.
+     *
+     * NOTE: PCA0CN.n bits are not cleared by ISR, therefore 
+     * the source is locked till the ISR will do clearing of the bits.     
+     */    
+    CIS_PCA = 11,
+    
+    /**     
+     * Comparator 0.
+     */    
+    CIS_COMPARATOR_0 = 12,
+    
+    /**
+     * Comparator 1.
+     */    
+    CIS_COMPARATOR1 = 13,
+    
+    /**     
+     * Timer 3 Overflow.
+     */    
+    CIS_TIMER3 = 14,
+    
+    /**     
+     * Supply Monitor Early Warning.
+     *
+     * NOTE: VDM0CN.5 and VDM0CN.4 bits are not cleared by ISR, therefore 
+     * the source is locked till the ISR will do clearing of the bits.
+     */
+    CIS_SUPPLY_MONITOR_EARLY_WARNING = 15,
+    
+    /**     
+     * Port Match.
+     */    
+    CIS_PORT_MATCH = 16,
+    
+    /**     
+     * SmaRTClock Oscillator Fail.
+     *
+     * NOTE: RTC0CN.5 bit is not cleared by ISR, therefore 
+     * the source is locked till the ISR will do clearing of the bit.
+     */    
+    CIS_RTCLOCK_OSC_FAIL = 17,
+    
+    /**     
+     * SPI 1.
+     *
+     * NOTE: SPI1CN.7-4 bits are not cleared by ISR, therefore 
+     * the source is locked till the ISR will do clearing of the bits.     
+     */        
+    CIS_SPI1 = 18
+
+};
+
+/**
  * Returns an interrupt resource.
  *
  * @param handler - an interrupt handler function.

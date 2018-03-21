@@ -22,7 +22,7 @@ extern void Thread_sleep(int16 millis);
  *
  * @return error code, returned by application, or else zero if no errors have been occurred.
  */
-extern int8 Thread_execute();
+extern int8 Thread_execute(void);
 
 /**
  * Initializes the thread scheduling.

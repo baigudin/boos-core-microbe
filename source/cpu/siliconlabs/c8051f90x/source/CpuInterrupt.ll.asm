@@ -99,7 +99,7 @@ m_int_reset:    ljmp        ?c_startup
                 CSEG        AT 0083h
                 handler     16, m_int_16_handler
 
-                ; SmaRTClock Oscillator Fail                                
+                ; SmaRTClock Oscillator Fail
                 CSEG        AT 008Bh
                 handler     17, m_int_17_handler
 

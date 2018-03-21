@@ -7,8 +7,23 @@
  */
 #include "Thread.h"
 #include "Program.h"
+#include "CpuTimer.h"
 #include "CpuInterrupt.h"
 #include "CpuWatchdog.h" 
+
+/**
+ * Definition for creating of watchdog resource.
+ */
+#define WATCHDOG_RESOURCE_CREATION  
+
+/**
+ * HW timer period in microseconds.
+ * 
+ * The used eight-bit timer must have 503 us period as maximum.
+ * Any other more values will be cropped by the driver to the maximum,
+ * and the final result of blink time won't be correct.
+ */
+#define TIMER_PERIOD (500ul)
 
 /**
  * The scheduler resources.
@@ -19,6 +34,10 @@ struct Resource
      * The timer 0 resource.
      */  
     int8 tim;  
+    /**
+     * The timer 0 interrupt resource.
+     */  
+    int8 intr;      
     
     /**
      * The watchdog timer source.
@@ -31,6 +50,21 @@ struct Resource
  * The scheduler resources.
  */  
 static struct Resource res_;
+
+/**
+ * The module has been initialized successfully.
+ */
+static int8 isInitialized_;
+
+/**
+ * Interrupt handler of Timer 1.
+ */
+static void handleTimerInterrupt(void)
+{
+    #ifdef WATCHDOG_RESOURCE_CREATION            
+    CpuWatchdog_restart(res_.wdt);                
+    #endif 
+}
 
 /**
  * Causes the currently executing thread to sleep.
@@ -50,12 +84,32 @@ void Thread_sleep(int16 millis)
  *
  * @return error code, returned by application, or else zero if no errors have been occurred.
  */
-int8 Thread_execute()
+int8 Thread_execute(void)
 {
     int8 error;
-    CpuInterrupt_enableAll(1);
-    error = Program_start();
-    CpuInterrupt_disableAll();
+    if( isInitialized_ )
+    {
+        /* Start all resources */
+        CpuInterrupt_enableAll(1);
+        CpuInterrupt_enable(res_.intr, 1); 
+        CpuTimer_start(res_.tim);    
+        #ifdef WATCHDOG_RESOURCE_CREATION        
+        CpuWatchdog_start(res_.wdt);    
+        #endif
+        /* Start a user program */
+        error = Program_start();
+        /* Stop all resources */    
+        #ifdef WATCHDOG_RESOURCE_CREATION        
+        CpuWatchdog_stop(res_.wdt);    
+        #endif
+        CpuTimer_stop(res_.tim);        
+        CpuInterrupt_disable(res_.intr);     
+        CpuInterrupt_disableAll();
+    }
+    else
+    {
+        error = SYS_ERROR;
+    }
     return error;
 }
 
@@ -66,18 +120,41 @@ int8 Thread_execute()
  */ 
 int8 Thread_initialize(void)
 {
-    uint16 i;
     int8 error = SYS_OK;
-    res_.wdt = CpuWatchdog_create(0);
-    CpuWatchdog_start(res_.wdt);
-    for(i=0; i<0xffff; i++)
+    isInitialized_ = 0;
+    /* Create timer 0 */
+    res_.tim = CpuTimer_create(0);
+    if(res_.tim == 0)
     {
-        if( (i & 0x7) == 0 )
-        {
-            CpuWatchdog_restart(res_.wdt);            
+        error = SYS_ERROR;        
+    }    
+    else
+    {
+        CpuTimer_setPeriod(res_.tim, TIMER_PERIOD);
+    }
+    /* Create interrupt of timer 0 */        
+    if(error == SYS_OK)
+    {
+        res_.intr = CpuInterrupt_create(&handleTimerInterrupt, CIS_TIMER0);
+        if(res_.intr == 0)
+        { 
+            error = SYS_ERROR;
         }
     }
-    CpuWatchdog_stop(res_.wdt);    
-    CpuWatchdog_delete(res_.wdt);
+    #ifdef WATCHDOG_RESOURCE_CREATION
+    /* Watchdog timer */        
+    if(error == SYS_OK)
+    {
+        res_.wdt = CpuWatchdog_create(0);
+        if(res_.intr == 0)
+        { 
+            error = SYS_ERROR;
+        }   
+    }
+    #endif /* WATCHDOG_RESOURCE_CREATION */
+    if(error == SYS_OK)
+    {
+        isInitialized_ = 1;
+    }
     return error;
 }

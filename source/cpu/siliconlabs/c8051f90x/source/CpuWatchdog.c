@@ -131,8 +131,8 @@ void CpuWatchdog_start(int8 res)
         /* Select the desired PCA clock source */
         REG_PCA0MD &= ~ 0x7 << 1;
         REG_PCA0MD |= PCA_CLOCK_SOURCE << 1;
-        /* Load PCA0CPL5 with the desired WDT update offset value */
-        REG_PCA0CPL5 = 0x01;
+        /* Load PCA0CPL5 with the WDT update offset value */
+        REG_PCA0CPL5 = 0xff;
         /* Enable the WDT */
         REG_PCA0MD |= 0x1 << 6;
         /* Reset the WDT timer by writing to PCA0CPH5 */
