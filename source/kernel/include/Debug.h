@@ -15,4 +15,11 @@
  */
 extern void Debug_signal(void);
 
+/**
+ * Signals about an action by a code value.
+ *
+ * @param value - a signal value.
+ */
+extern void Debug_signalCode(int8 value);
+
 #endif /* DEBUG_H_ */

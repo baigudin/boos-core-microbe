@@ -33,11 +33,11 @@ static int8 kernelInitialize(void)
         /* Stage 2 */
         case 2:
             error = Board_initialize();
-            #ifdef BOOS_DEBUG
-            Debug_signal();
-            #endif        
             if(error != SYS_OK)
             {
+                #ifdef BOOS_DEBUG        
+                Debug_signalCode(0x30);
+                #endif
                 break; 
             }  
             stage++;
@@ -45,11 +45,11 @@ static int8 kernelInitialize(void)
         /* Stage 3 */            
         case 3:
             error = Thread_initialize();
-            #ifdef BOOS_DEBUG
-            Debug_signal();
-            #endif         
             if(error != SYS_OK)
             {
+                #ifdef BOOS_DEBUG        
+                Debug_signalCode(0x31);
+                #endif                
                 break;
             }
             stage++;                    
@@ -57,11 +57,11 @@ static int8 kernelInitialize(void)
         /* Stage 4 */            
         case 4:
             error = Thread_execute();
-            #ifdef BOOS_DEBUG
-            Debug_signal();
-            #endif         
             if(error != SYS_OK)
             {
+                #ifdef BOOS_DEBUG        
+                Debug_signalCode(0x32);
+                #endif                
                 break;
             }
             stage++;        
