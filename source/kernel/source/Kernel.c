@@ -8,7 +8,6 @@
 #include "Cpu.h" 
 #include "Board.h"
 #include "Thread.h"
-#include "Debug.h"
 
 /**
  * Initializes the operating system.
@@ -35,9 +34,6 @@ static int8 kernelInitialize(void)
             error = Board_initialize();
             if(error != SYS_OK)
             {
-                #ifdef BOOS_DEBUG        
-                Debug_signalCode(0x30);
-                #endif
                 break; 
             }  
             stage++;
@@ -47,9 +43,6 @@ static int8 kernelInitialize(void)
             error = Thread_initialize();
             if(error != SYS_OK)
             {
-                #ifdef BOOS_DEBUG        
-                Debug_signalCode(0x31);
-                #endif                
                 break;
             }
             stage++;                    
@@ -58,10 +51,7 @@ static int8 kernelInitialize(void)
         case 4:
             error = Thread_execute();
             if(error != SYS_OK)
-            {
-                #ifdef BOOS_DEBUG        
-                Debug_signalCode(0x32);
-                #endif                
+            {             
                 break;
             }
             stage++;        
