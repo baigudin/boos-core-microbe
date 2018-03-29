@@ -17,4 +17,18 @@
  */  
 extern void Thread_sleep(int16 millis);
 
+/**
+ * Initiates the threads executing.
+ *
+ * @return error code, returned by application, or else zero if no errors have been occurred.
+ */
+extern int8 Thread_execute(void);
+
+/**
+ * Initializes the thread scheduling.
+ *
+ * @return error code or else zero if no errors have been occurred.
+ */ 
+extern int8 Thread_initialize(void);
+
 #endif /* THREAD_H_ */
