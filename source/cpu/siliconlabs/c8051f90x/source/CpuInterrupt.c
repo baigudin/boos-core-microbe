@@ -328,5 +328,5 @@ int8 CpuInterrupt_initialize(void)
     REG_EIP2 = 0;
     #endif /* BOOS_RESTARTING */
     isInitialized_ = 1;  
-    return SYS_OK;
+    return ERROR_OK;
 }

@@ -8,6 +8,7 @@
 #ifndef CPU_COMPARATOR_H_
 #define CPU_COMPARATOR_H_
 
+#include "Types.h"
 #include "Error.h"
 
 /**

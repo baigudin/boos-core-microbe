@@ -224,7 +224,7 @@ int8 CpuTimer_initialize(void)
     #ifdef BOOS_RESTARTING
     int8 i;
     #endif /* BOOS_RESTARTING */
-    int8 error = SYS_OK;
+    int8 error = ERROR_OK;
     isInitialized_ = 0;   
     
     REG_TCON &= 0x0F;
@@ -260,7 +260,7 @@ int8 CpuTimer_initialize(void)
               | 0xC << 0; /* System clock divided by 1 */
     #else /* TIMER_DIVIDER == UNSUPPORTING */
               | 0x0 << 0; /* System clock divided by 4 */          
-    error = SYS_ERROR;
+    error = ERROR_UNDEFINED;
     #endif /* TIMER_DIVIDER */
     
     #ifdef BOOS_RESTARTING
@@ -270,7 +270,7 @@ int8 CpuTimer_initialize(void)
     }
     #endif /* BOOS_RESTARTING */  
     
-    if(error == SYS_OK)
+    if(error == ERROR_OK)
     {
         isInitialized_ = 1;  
     }  

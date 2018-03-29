@@ -178,5 +178,5 @@ int8 CpuWatchdog_initialize(void)
     /* Disable watchdog timer */
     REG_PCA0MD &= 0xbf;
     isInitialized_ = 1;
-    return SYS_OK;
+    return ERROR_OK;
 }

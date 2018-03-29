@@ -16,14 +16,14 @@
  */
 static int8 kernelInitialize(void)
 {
-    int8 error = SYS_OK;
+    int8 error = ERROR_OK;
     int8 stage = 1;
     switch(stage)
     {
         /* Stage 1 */            
         case 1:
             error = Cpu_initialize();
-            if(error != SYS_OK)
+            if(error != ERROR_OK)
             { 
                 break; 
             }
@@ -31,26 +31,26 @@ static int8 kernelInitialize(void)
             
         /* Stage 2 */
         case 2:
+            error = Thread_initialize();
+            if(error != ERROR_OK)
+            {
+                break;
+            }
+            stage++;            
+            
+        /* Stage 3 */
+        case 3:
             error = Board_initialize();
-            if(error != SYS_OK)
+            if(error != ERROR_OK)
             {
                 break; 
             }  
             stage++;
             
-        /* Stage 3 */            
-        case 3:
-            error = Thread_initialize();
-            if(error != SYS_OK)
-            {
-                break;
-            }
-            stage++;                    
-            
         /* Stage 4 */            
         case 4:
             error = Thread_execute();
-            if(error != SYS_OK)
+            if(error != ERROR_OK)
             {             
                 break;
             }
@@ -63,14 +63,10 @@ static int8 kernelInitialize(void)
             
         /* Stage error */
         default:
-            error = SYS_ERROR;            
+            error = ERROR_UNDEFINED;            
             stage = -1;
             break;
-    }
-    if(stage != 0 && error == SYS_OK)
-    {
-        error = SYS_ERROR;
-    }      
+    }  
     return error;
 }
 

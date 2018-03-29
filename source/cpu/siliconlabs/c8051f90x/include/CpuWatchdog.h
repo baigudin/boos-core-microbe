@@ -8,6 +8,7 @@
 #ifndef CPU_WATCHDOG_H_
 #define CPU_WATCHDOG_H_
 
+#include "Types.h"
 #include "Error.h"
 
 /**

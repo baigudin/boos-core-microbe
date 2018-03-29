@@ -337,5 +337,5 @@ extern int8 CpuComparator_initialize(void)
     REG_CPT1CN = 0x0;
     #endif /* BOOS_RESTARTING */
     isInitialized_ = 1;  
-    return SYS_OK;
+    return ERROR_OK;
 }

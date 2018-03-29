@@ -8,6 +8,7 @@
 #ifndef CPU_INTERRUPT_H_
 #define CPU_INTERRUPT_H_
 
+#include "Types.h"
 #include "Error.h"
 
 /**

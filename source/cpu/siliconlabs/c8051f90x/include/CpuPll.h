@@ -8,6 +8,7 @@
 #ifndef CPU_PLL_H_
 #define CPU_PLL_H_
 
+#include "Types.h"
 #include "Error.h"
 
 /**

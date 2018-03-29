@@ -8,6 +8,7 @@
 #ifndef CPU_TIMER_H_
 #define CPU_TIMER_H_
 
+#include "Types.h"
 #include "Error.h"
 
 /**

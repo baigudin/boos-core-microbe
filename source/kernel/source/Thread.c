@@ -108,7 +108,7 @@ int8 Thread_execute(void)
     }
     else
     {
-        error = SYS_ERROR;
+        error = ERROR_UNDEFINED;
     }
     return error;
 }
@@ -120,39 +120,39 @@ int8 Thread_execute(void)
  */ 
 int8 Thread_initialize(void)
 {
-    int8 error = SYS_OK;
+    int8 error = ERROR_OK;
     isInitialized_ = 0;
     /* Create timer 0 */
     res_.tim = CpuTimer_create(0);
     if(res_.tim == 0)
     {
-        error = SYS_ERROR;        
+        error = ERROR_UNDEFINED;        
     }    
     else
     {
         CpuTimer_setPeriod(res_.tim, TIMER_PERIOD);
     }
     /* Create interrupt of timer 0 */        
-    if(error == SYS_OK)
+    if(error == ERROR_OK)
     {
         res_.intr = CpuInterrupt_create(&handleTimerInterrupt, CIS_TIMER0);
         if(res_.intr == 0)
         { 
-            error = SYS_ERROR;
+            error = ERROR_UNDEFINED;
         }
     }
     #ifdef WATCHDOG_RESOURCE_CREATION
     /* Watchdog timer */        
-    if(error == SYS_OK)
+    if(error == ERROR_OK)
     {
         res_.wdt = CpuWatchdog_create(0);
         if(res_.intr == 0)
         { 
-            error = SYS_ERROR;
+            error = ERROR_UNDEFINED;
         }   
     }
     #endif /* WATCHDOG_RESOURCE_CREATION */
-    if(error == SYS_OK)
+    if(error == ERROR_OK)
     {
         isInitialized_ = 1;
     }

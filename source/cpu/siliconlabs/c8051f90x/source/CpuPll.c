@@ -41,9 +41,9 @@ int8 CpuPll_initialize(void)
         val = REG_CLKSEL & 0x80;
     }
     while(val == 0x0);
-    error = SYS_OK;
+    error = ERROR_OK;
     #else
-    error = SYS_ERROR;
+    error = ERROR_UNDEFINED;
     #endif /* CPU_CLOCK */
     return error;  
 }

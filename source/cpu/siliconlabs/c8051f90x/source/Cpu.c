@@ -19,14 +19,14 @@
  */   
 int8 Cpu_initialize(void)
 {
-    int8 error = SYS_OK;
+    int8 error = ERROR_OK;
     int8 stage = 1;    
     switch(stage)
     {
         /* Stage 1 */
         case 1:        
             error = CpuWatchdog_initialize();	  
-            if(error != SYS_OK)
+            if(error != ERROR_OK)
             { 
                 break; 
             }    
@@ -35,7 +35,7 @@ int8 Cpu_initialize(void)
         /* Stage 2 */
         case 2:                  
             error = CpuPll_initialize();
-            if(error != SYS_OK)
+            if(error != ERROR_OK)
             { 
                 break; 
             }
@@ -44,7 +44,7 @@ int8 Cpu_initialize(void)
         /* Stage 3 */
         case 3:                    
             error = CpuInterrupt_initialize();
-            if(error != SYS_OK)
+            if(error != ERROR_OK)
             { 
                 break; 
             }   
@@ -53,7 +53,7 @@ int8 Cpu_initialize(void)
         /* Stage 4 */
         case 4:
             error = CpuTimer_initialize();
-            if(error != SYS_OK)
+            if(error != ERROR_OK)
             { 
                 break; 
             } 
@@ -62,7 +62,7 @@ int8 Cpu_initialize(void)
         /* Stage 5 */
         case 5:                    
             error = CpuComparator_initialize();
-            if(error != SYS_OK)
+            if(error != ERROR_OK)
             { 
                 break; 
             }    
@@ -78,9 +78,9 @@ int8 Cpu_initialize(void)
             stage = -1;
             break;
     }
-    if(stage != 0 && error == SYS_OK)
+    if(stage != 0 && error == ERROR_OK)
     {
-        error = SYS_ERROR;
+        error = ERROR_UNDEFINED;
     }    
     return error;
 }
