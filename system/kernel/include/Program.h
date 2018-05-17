@@ -1,5 +1,5 @@
 /** 
- * User main function.
+ * User program entry.
  * 
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2017-2018, Sergey Baigudin

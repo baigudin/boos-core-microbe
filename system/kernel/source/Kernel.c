@@ -1,5 +1,5 @@
 /** 
- * The operating system main class.
+ * The operating system kernel.
  * 
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2017-2018, Sergey Baigudin
