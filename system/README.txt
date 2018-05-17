@@ -1,6 +1,6 @@
 BOOS Microbe C and ASM source code files by Baigudin Software
 -------------------------------------------------------------
 The folder content:
- - INCLUDE directory contains header files of the system.
- - SYSTEM directory contains source files of the operating system.
- - DRIVER directory contains source files of the operating system drivers.
+ - CPU     directory contains source files of CPUs supported by the operating system.
+ - KERNEL  directory contains source files of the operating system kernel.
+ - LIBRARY directory contains source files of the operating system library.
