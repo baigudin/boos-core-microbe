@@ -9,6 +9,7 @@
 #define PROGRAM_H_
 
 #include "Types.h"
+#include "Error.h"
 
 /**
  * User function which will be stated as first.

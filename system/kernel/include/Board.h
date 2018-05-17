@@ -9,6 +9,7 @@
 #define BOARD_H_
 
 #include "Types.h"
+#include "Error.h"
 
 /**
  * Initializes a processor board.

@@ -9,6 +9,7 @@
 #define THREAD_H_
 
 #include "Types.h"
+#include "Error.h"
 
 /**
  * Causes the currently executing thread to sleep.

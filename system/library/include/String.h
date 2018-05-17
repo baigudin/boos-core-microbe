@@ -10,7 +10,6 @@
 
 #include "Types.h"
 
-
 /** 
  * Gets a string length.
  *
