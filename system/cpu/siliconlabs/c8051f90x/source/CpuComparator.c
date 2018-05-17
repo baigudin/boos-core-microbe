@@ -1,5 +1,5 @@
 /** 
- * Silicon Labs C8051F9x MCUs interrupt driver.  
+ * Silicon Labs C8051F9x MCUs comparator driver.  
  * 
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2017-2018, Sergey Baigudin

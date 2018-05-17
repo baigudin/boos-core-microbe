@@ -1,5 +1,5 @@
 /** 
- * The operating system main class.
+ * The operating system thread.
  * 
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2017-2018, Sergey Baigudin
@@ -20,8 +20,7 @@
  * HW timer period in microseconds.
  * 
  * The used eight-bit timer must have 503 us period as maximum.
- * Any other more values will be cropped by the driver to the maximum,
- * and the final result of blink time won't be correct.
+ * Any other more values will be cropped by the driver to the maximum.
  */
 #define TIMER_PERIOD (500ul)
 
