@@ -20,7 +20,7 @@
  * @param pos - a positive input channel value.
  * @return the comparator resource, or zero if error has been occurred.
  */
-extern int8 CpuComparator_create(void(*handler)(), int8 index, int8 neg, int8 pos);
+extern int8 CpuComparator_create(void(*handler)(int8), int8 index, int8 neg, int8 pos);
 
 /**
  * Deletes the comparator resource.
