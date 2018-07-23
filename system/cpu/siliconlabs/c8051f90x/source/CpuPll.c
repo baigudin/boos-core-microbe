@@ -10,11 +10,11 @@
 #include "CpuConfiguration.h"
   
 /**
- * Initializes the driver.
+ * Plugs the driver.
  *
  * @return error code or else zero if no errors have been occurred.
  */   
-int8 CpuPll_initialize(void)
+int8 CpuPll_plug(void)
 {
     int8 error;
     #if (SOURCE_CLOCK == 24500000 || CPU_CLOCK == 24300000)

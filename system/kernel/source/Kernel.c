@@ -5,16 +5,17 @@
  * @copyright 2017-2018, Sergey Baigudin
  * @license   http://embedded.team/license/
  */
+#define BOOS_SYSTEM_MODE 
 #include "Cpu.h" 
 #include "Board.h"
 #include "Thread.h"
 
 /**
- * Initializes the operating system.
+ * Starts the operating system.
  * 
  * @return error code or else zero if no errors have been occurred.
  */
-static int8 kernelInitialize(void)
+static int8 startKernel(void)
 {
     int8 error = ERROR_OK;
     int8 stage = 1;
@@ -22,7 +23,7 @@ static int8 kernelInitialize(void)
     {
         /* Stage 1 */            
         case 1:
-            error = Cpu_initialize();
+            error = Cpu_plug();
             if(error != ERROR_OK)
             { 
                 break; 
@@ -31,7 +32,7 @@ static int8 kernelInitialize(void)
             
         /* Stage 2 */
         case 2:
-            error = Thread_initialize();
+            error = Thread_plug();
             if(error != ERROR_OK)
             {
                 break;
@@ -40,7 +41,7 @@ static int8 kernelInitialize(void)
             
         /* Stage 3 */
         case 3:
-            error = Board_initialize();
+            error = Board_plug();
             if(error != ERROR_OK)
             {
                 break; 
@@ -85,5 +86,5 @@ static int8 kernelInitialize(void)
  */   
 int16 main(void)
 {
-    return kernelInitialize();
+    return startKernel();
 }

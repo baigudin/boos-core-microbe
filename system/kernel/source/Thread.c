@@ -51,9 +51,9 @@ struct Resource
 static struct Resource res_;
 
 /**
- * The module has been initialized successfully.
+ * The module has been plugged successfully.
  */
-static int8 isInitialized_;
+static int8 isPlugged_;
 
 /**
  * Interrupt handler of Timer 1.
@@ -86,7 +86,7 @@ void Thread_sleep(int16 millis)
 int8 Thread_execute(void)
 {
     int8 error;
-    if( isInitialized_ )
+    if( isPlugged_ )
     {
         /* Start all resources */
         CpuInterrupt_enableAll(1);
@@ -113,14 +113,14 @@ int8 Thread_execute(void)
 }
 
 /**
- * Initializes the thread scheduling.
+ * Plugs the thread scheduling.
  *
  * @return error code or else zero if no errors have been occurred.
  */ 
-int8 Thread_initialize(void)
+int8 Thread_plug(void)
 {
     int8 error = ERROR_OK;
-    isInitialized_ = 0;
+    isPlugged_ = 0;
     /* Create timer 0 */
     res_.tim = CpuTimer_create(0);
     if(res_.tim == 0)
@@ -153,7 +153,7 @@ int8 Thread_initialize(void)
     #endif /* WATCHDOG_RESOURCE_CREATION */
     if(error == ERROR_OK)
     {
-        isInitialized_ = 1;
+        isPlugged_ = 1;
     }
     return error;
 }

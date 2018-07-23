@@ -70,9 +70,9 @@ static struct Context context_;
 static struct Handler handler_[RES_NUMBER];
 
 /**
- * The driver has been initialized successfully.
+ * The driver has been plugged successfully.
  */
-static int8 isInitialized_;
+static int8 isPlugged_;
 
 /**
  * Tests if passed value is the resource.
@@ -84,7 +84,7 @@ static int8 isAlloced(int8 res)
 {
     int8 index;
     int8 ret = 0;
-    if(isInitialized_)
+    if(isPlugged_)
     {  
         if( res != 0 ) 
         {
@@ -310,13 +310,13 @@ void CpuInterrupt_enableAll(int8 status)
 }
 
 /**
- * Initializes the driver.
+ * Plugs the driver.
  *
  * @return error code or else zero if no errors have been occurred.
  */   
-int8 CpuInterrupt_initialize(void)
+int8 CpuInterrupt_plug(void)
 {
-    isInitialized_ = 0;  
+    isPlugged_ = 0;  
     #ifdef BOOS_RESTARTING
     /* Disable all interrupts */
     REG_IE = 0;
@@ -327,6 +327,6 @@ int8 CpuInterrupt_initialize(void)
     REG_EIP1 = 0;
     REG_EIP2 = 0;
     #endif /* BOOS_RESTARTING */
-    isInitialized_ = 1;  
+    isPlugged_ = 1;  
     return ERROR_OK;
 }
