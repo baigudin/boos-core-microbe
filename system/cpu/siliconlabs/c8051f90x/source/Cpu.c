@@ -5,6 +5,7 @@
  * @copyright 2017-2018 Sergey Baigudin
  * @license   http://embedded.team/license/
  */
+#define BOOS_SYSTEM_MODE  
 #include "Cpu.h" 
 #include "CpuWatchdog.h" 
 #include "CpuPll.h"
@@ -13,11 +14,11 @@
 #include "CpuComparator.h"
   
 /**
- * Initializes the driver.
+ * Plugs the driver.
  *
  * @return error code or else zero if no errors have been occurred.
  */   
-int8 Cpu_initialize(void)
+int8 Cpu_plug(void)
 {
     int8 error = ERROR_OK;
     int8 stage = 1;    
@@ -25,7 +26,7 @@ int8 Cpu_initialize(void)
     {
         /* Stage 1 */
         case 1:        
-            error = CpuWatchdog_initialize();	  
+            error = CpuWatchdog_plug();	  
             if(error != ERROR_OK)
             { 
                 break; 
@@ -34,7 +35,7 @@ int8 Cpu_initialize(void)
 
         /* Stage 2 */
         case 2:                  
-            error = CpuPll_initialize();
+            error = CpuPll_plug();
             if(error != ERROR_OK)
             { 
                 break; 
@@ -43,7 +44,7 @@ int8 Cpu_initialize(void)
         
         /* Stage 3 */
         case 3:                    
-            error = CpuInterrupt_initialize();
+            error = CpuInterrupt_plug();
             if(error != ERROR_OK)
             { 
                 break; 
@@ -52,7 +53,7 @@ int8 Cpu_initialize(void)
         
         /* Stage 4 */
         case 4:
-            error = CpuTimer_initialize();
+            error = CpuTimer_plug();
             if(error != ERROR_OK)
             { 
                 break; 
@@ -61,7 +62,7 @@ int8 Cpu_initialize(void)
         
         /* Stage 5 */
         case 5:                    
-            error = CpuComparator_initialize();
+            error = CpuComparator_plug();
             if(error != ERROR_OK)
             { 
                 break; 

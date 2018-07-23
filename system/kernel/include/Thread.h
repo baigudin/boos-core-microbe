@@ -19,6 +19,11 @@
 extern void Thread_sleep(int16 millis);
 
 /**
+ * This partially guards from calling these functions by a user program.
+ */
+#ifdef BOOS_SYSTEM_MODE
+
+/**
  * Initiates the threads executing.
  *
  * @return error code, returned by application, or else zero if no errors have been occurred.
@@ -26,10 +31,12 @@ extern void Thread_sleep(int16 millis);
 extern int8 Thread_execute(void);
 
 /**
- * Initializes the thread scheduling.
+ * Plugs the thread scheduling.
  *
  * @return error code or else zero if no errors have been occurred.
  */ 
-extern int8 Thread_initialize(void);
+extern int8 Thread_plug(void);
+
+#endif /* BOOS_SYSTEM_MODE */
 
 #endif /* THREAD_H_ */

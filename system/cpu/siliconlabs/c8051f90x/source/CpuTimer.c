@@ -45,9 +45,9 @@
 static int8 lock_[RES_NUMBER];
 
 /**
- * The driver has been initialized successfully.
+ * The driver has been plugged successfully.
  */
-static int8 isInitialized_;
+static int8 isPlugged_;
 
 /**
  * Tests if passed value is the resource.
@@ -59,7 +59,7 @@ static int8 isAlloced(int8 res)
 {
     int8 index;    
     int8 ret = 0;
-    if(isInitialized_)
+    if(isPlugged_)
     {  
         if( res != 0 ) 
         {
@@ -215,17 +215,17 @@ void CpuTimer_stop(int8 res)
 }
  
 /**
- * Initializes the driver.
+ * Plugs the driver.
  *
  * @return error code or else zero if no errors have been occurred.
  */   
-int8 CpuTimer_initialize(void) 
+int8 CpuTimer_plug(void) 
 {
     #ifdef BOOS_RESTARTING
     int8 i;
     #endif /* BOOS_RESTARTING */
     int8 error = ERROR_OK;
-    isInitialized_ = 0;   
+    isPlugged_ = 0;   
     
     REG_TCON &= 0x0F;
     REG_TCON |= 0x0 << 7  /* Timer 1 owerflow is cleared */
@@ -272,7 +272,7 @@ int8 CpuTimer_initialize(void)
     
     if(error == ERROR_OK)
     {
-        isInitialized_ = 1;  
+        isPlugged_ = 1;  
     }  
     return error;
 }

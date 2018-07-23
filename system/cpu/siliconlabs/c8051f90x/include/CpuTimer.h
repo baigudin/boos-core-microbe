@@ -49,10 +49,17 @@ extern void CpuTimer_start(int8 res);
 extern void CpuTimer_stop(int8 res);
 
 /**
- * Initializes the driver.
+ * This partially guards from calling these functions by a user program.
+ */
+#ifdef BOOS_SYSTEM_MODE
+
+/**
+ * Plugs the driver.
  *
  * @return error code or else zero if no errors have been occurred.
  */   
-extern int8 CpuTimer_initialize(void);
+extern int8 CpuTimer_plug(void);
+
+#endif /* BOOS_SYSTEM_MODE */
 
 #endif /* CPU_TIMER_H_ */

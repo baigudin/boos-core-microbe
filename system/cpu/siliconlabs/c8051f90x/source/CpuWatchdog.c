@@ -40,9 +40,9 @@
 static int8 lock_[RES_NUMBER];
 
 /**
- * The driver has been initialized successfully.
+ * The driver has been plugged successfully.
  */
-static int8 isInitialized_;
+static int8 isPlugged_;
 
 /**
  * Tests if passed value is the resource.
@@ -54,7 +54,7 @@ static int8 isAlloced(int8 res)
 {
     int8 index;    
     int8 ret = 0;
-    if(isInitialized_)
+    if(isPlugged_)
     {  
         if( res != 0 ) 
         {
@@ -169,14 +169,14 @@ void CpuWatchdog_restart(int8 res)
 }
   
 /**
- * Initializes the driver.
+ * Plugs the driver.
  *
  * @return error code or else zero if no errors have been occurred.
  */   
-int8 CpuWatchdog_initialize(void)
+int8 CpuWatchdog_plug(void)
 {
     /* Disable watchdog timer */
     REG_PCA0MD &= 0xbf;
-    isInitialized_ = 1;
+    isPlugged_ = 1;
     return ERROR_OK;
 }

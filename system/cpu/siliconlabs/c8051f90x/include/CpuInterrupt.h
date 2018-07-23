@@ -189,10 +189,17 @@ extern int8 CpuInterrupt_disableAll(void);
 extern void CpuInterrupt_enableAll(int8 status);
 
 /**
- * Initializes the driver.
+ * This partially guards from calling these functions by a user program.
+ */
+#ifdef BOOS_SYSTEM_MODE
+
+/**
+ * Plugs the driver.
  *
  * @return error code or else zero if no errors have been occurred.
  */   
-extern int8 CpuInterrupt_initialize(void);
+extern int8 CpuInterrupt_plug(void);
+
+#endif /* BOOS_SYSTEM_MODE */
 
 #endif /* CPU_INTERRUPT_H_ */

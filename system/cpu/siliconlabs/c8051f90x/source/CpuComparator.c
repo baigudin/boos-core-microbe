@@ -93,9 +93,9 @@ struct Comparator
 static struct Comparator cmp_[RES_NUMBER];
 
 /**
- * The driver has been initialized successfully.
+ * The driver has been plugged successfully.
  */
-static int8 isInitialized_;
+static int8 isPlugged_;
 
 /**
  * Tests if passed value is the resource.
@@ -107,7 +107,7 @@ static int8 getIndex(int8 res)
 {
     int8 index;    
     int8 ret = -1;
-    if(isInitialized_)
+    if(isPlugged_)
     {  
         if( res != 0 ) 
         {
@@ -297,14 +297,14 @@ void CpuComparator_enableInterrupt(int8 res, int8 status)
 }
 
 /**
- * Initializes the driver.
+ * Plugs the driver.
  *
  * @return error code or else zero if no errors have been occurred.
  */   
-extern int8 CpuComparator_initialize(void)
+extern int8 CpuComparator_plug(void)
 {  
     int8 i;
-    isInitialized_ = 0;   
+    isPlugged_ = 0;   
     for(i=0; i<RES_NUMBER; i++)
     {
         cmp_[i].lock = 0;
@@ -336,6 +336,6 @@ extern int8 CpuComparator_initialize(void)
     REG_CPT0CN = 0x0;
     REG_CPT1CN = 0x0;
     #endif /* BOOS_RESTARTING */
-    isInitialized_ = 1;  
+    isPlugged_ = 1;  
     return ERROR_OK;
 }
